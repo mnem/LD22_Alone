@@ -13,6 +13,9 @@ package worlds
 	 */
 	public class OuterSpace extends World
 	{
+		public static const SPACE_WIDTH:int = 890 * 5;
+		public static const SPACE_HEIGHT:int = 500 * 5;
+		//
 		protected var halfBoundsWidth:int;
 		protected var halfBoundsHeight:int;
 		protected var player:Player;
@@ -34,11 +37,11 @@ package worlds
 			player = new Player();
 
 			starfields = new Vector.<Starfield>(5, true);
-			starfields[0] = new Starfield(FP.bounds.width * 5, FP.bounds.height * 5, 1000, 1.0, 0.4);
-			starfields[1] = new Starfield(FP.bounds.width * 5, FP.bounds.height * 5, 700, 0.7, 0.55);
-			starfields[2] = new Starfield(FP.bounds.width * 5, FP.bounds.height * 5, 500, 0.5, 0.7);
-			starfields[3] = new Starfield(FP.bounds.width * 5, FP.bounds.height * 5, 300, 0.3, 0.8);
-			starfields[4] = new Starfield(FP.bounds.width * 5, FP.bounds.height * 5, 150, 0.15, 1);
+			starfields[0] = new Starfield(SPACE_WIDTH, SPACE_HEIGHT, 1000, 1.0, 0.4);
+			starfields[1] = new Starfield(SPACE_WIDTH, SPACE_HEIGHT, 700, 0.7, 0.55);
+			starfields[2] = new Starfield(SPACE_WIDTH, SPACE_HEIGHT, 500, 0.5, 0.7);
+			starfields[3] = new Starfield(SPACE_WIDTH, SPACE_HEIGHT, 300, 0.3, 0.8);
+			starfields[4] = new Starfield(SPACE_WIDTH, SPACE_HEIGHT, 150, 0.15, 1);
 
 			bulletMaster = new BulletMaster();
 			asteroidSlinger = new AsteroidSlinger();
