@@ -1,6 +1,7 @@
 package entities.asteroids
 {
 	import net.flashpunk.Entity;
+	import net.flashpunk.FP;
 	import net.flashpunk.graphics.Graphiclist;
 	import net.flashpunk.utils.Input;
 	import net.flashpunk.utils.Key;
@@ -32,6 +33,16 @@ package entities.asteroids
 			{
 				sling();
 			}
+
+			if(pool.activeObjects < 10)
+			{
+				if(--timeToAdd <= 0)
+				{
+					sling();
+					timeToAdd = (FP.random * 60) + 30;
+				}
+			}
+
 			asteroids.update();
 		}
 
@@ -56,6 +67,7 @@ package entities.asteroids
 			asteroids.add(asteroid);
 		}
 
+		protected var timeToAdd:int = 0;
 		protected var asteroids:Graphiclist = new Graphiclist();
 		protected var pool:SimpleObjectPool;
 	}

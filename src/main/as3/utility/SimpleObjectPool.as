@@ -11,6 +11,7 @@ package utility
 	{
 		public var name:String;
 		public var watcher:SimpleObjectPoolWatcher;
+		public var activeObjects:uint = 0;
 
 		public function SimpleObjectPool(name:String, clazz:Class, watcher:SimpleObjectPoolWatcher = null)
 		{
@@ -22,16 +23,22 @@ package utility
 		public function take():*
 		{
 			var item:*;
+			var isNew:Boolean = false;
+
 			if (nextPoolItem < 0)
 			{
 				item = new clazz();
-				if (Main.DEBUG)
-				{
-					FP.log(name + " pool drained. Creating new " + getQualifiedClassName(clazz));
-				}
+				isNew = true;
 				if (watcher)
 				{
-					watcher.itemWasCreated(item);
+					try
+					{
+						watcher.itemWasCreated(item);
+					}
+					catch(e:Error)
+					{
+						FP.log(name + " watcher b0rked: " + e);
+					}
 				}
 			}
 			else
@@ -40,6 +47,11 @@ package utility
 				nextPoolItem--;
 			}
 
+			activeObjects++;
+			if (Main.DEBUG)
+			{
+				FP.log(name + " pool item take. New? " + isNew + " (" + activeObjects + "/" + pool.length + "/ " + nextPoolItem + ")");
+			}
 			return item;
 		}
 
@@ -49,12 +61,13 @@ package utility
 			{
 				// Probably came from here. We'll take it anyway
 				nextPoolItem++;
-				if (Main.DEBUG && nextPoolItem >= pool.length)
-				{
-					FP.log(name + " pool increasing by " + ((nextPoolItem + 1) - pool.length));
-				}
-
 				pool[nextPoolItem] = taken;
+				activeObjects--;
+
+				if (Main.DEBUG)
+				{
+					FP.log(name + " pool item returned. (" + activeObjects + "/" + pool.length + "/ " + nextPoolItem + ")");
+				}
 			}
 			else
 			{
