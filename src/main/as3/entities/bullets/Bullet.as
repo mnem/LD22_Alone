@@ -47,16 +47,21 @@ package entities.bullets
 
 			if (currentLife <= 0)
 			{
-				visible = false;
-				active = false;
-				if (bm)
-				{
-					bm.bulletExpired(this);
-				}
+				expired();
 			}
 			else
 			{
 				image.alpha = currentLife / life;
+			}
+		}
+
+		public function expired():void
+		{
+			visible = false;
+			active = false;
+			if (bm)
+			{
+				bm.bulletExpired(this);
 			}
 		}
 	}

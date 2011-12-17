@@ -1,5 +1,7 @@
 package entities.asteroids
 {
+	import entities.bullets.Bullet;
+
 	import net.flashpunk.Entity;
 	import net.flashpunk.FP;
 	import net.flashpunk.graphics.Image;
@@ -15,6 +17,7 @@ package entities.asteroids
 		public var rV:Number;
 		public var slinger:AsteroidSlinger;
 		public var image:Image;
+		public var power:int;
 
 		public function Asteroid()
 		{
@@ -34,6 +37,28 @@ package entities.asteroids
 			x += xV * FP.elapsed;
 			y += yV * FP.elapsed;
 			image.angle += rV * FP.elapsed;
+
+			var bullet:Bullet = collide(CollisionTypes.BULLET, x, y) as Bullet;
+			if (bullet)
+			{
+				power -= bullet.currentLife;
+				bullet.expired();
+
+				if (power < 0)
+				{
+					explodeAsteroid();
+				}
+			}
+		}
+
+		public function explodeAsteroid():void
+		{
+			active = false;
+			visible = false;
+			if(slinger)
+			{
+				slinger.asteroidExpired(this);
+			}
 		}
 	}
 }

@@ -16,6 +16,8 @@ package entities
 	 */
 	public class Player extends Entity
 	{
+		public static const NAME:String = "player";
+		//
 		public var image:Image;
 		public var velocity:Point = new Point();
 		public var laserCharge:Number = 0;
@@ -40,6 +42,7 @@ package entities
 
 			Input.define(ACTION_SHOOT, Key.SPACE, Key.X, Key.C);
 
+			name = NAME;
 			layer = Layers.PLAYER;
 		}
 
@@ -92,6 +95,10 @@ package entities
 			{
 				FP.angleXY(_scratchPoint, image.angle, LASER_VELOCITY);
 				bm.shoot(x, y, image.angle, _scratchPoint.x, _scratchPoint.y);
+
+				// Recoil. Yes, I know it's a laser. Shut up.
+				velocity.x += _scratchPoint.x * 0.2;
+				velocity.y += _scratchPoint.y * 0.2;
 			}
 		}
 

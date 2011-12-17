@@ -67,6 +67,11 @@ package entities.asteroids
 			asteroid.visible = true;
 		}
 
+		public function asteroidExpired(asteroid:Asteroid):void
+		{
+			pool.give(asteroid);
+		}
+
 		public function itemWasCreated(item:*):void
 		{
 			var asteroid:Asteroid = item as Asteroid;
@@ -84,7 +89,7 @@ package entities.asteroids
 		private static const ASTEROID_MAX_RV:int = 100;
 		//
 		private static const ASTEROID_MIN_POWER:int = 50;
-		private static const ASTEROID_MAX_POWER:int = 100;
+		private static const ASTEROID_MAX_POWER:int = 200;
 		//
 		private static const MAX_ASTEROIDS:int = 40;
 	}
