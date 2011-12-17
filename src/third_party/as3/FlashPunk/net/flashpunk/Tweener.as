@@ -9,44 +9,44 @@
 		 * Persistent Tween type, will stop when it finishes.
 		 */
 		public const PERSIST:uint = 0;
-		
+
 		/**
 		 * Looping Tween type, will restart immediately when it finishes.
 		 */
 		public const LOOPING:uint = 1;
-		
+
 		/**
 		 * Oneshot Tween type, will stop and remove itself from its core container when it finishes.
 		 */
 		public const ONESHOT:uint = 2;
-		
+
 		/**
 		 * If the Tweener should update.
 		 */
 		public var active:Boolean = true;
-		
+
 		/**
 		 * If the Tweener should clear on removal. For Entities, this is when they are
 		 * removed from a World, and for World this is when the active World is switched.
 		 */
 		public var autoClear:Boolean = false;
-		
+
 		/**
 		 * Constructor.
 		 */
-		public function Tweener() 
+		public function Tweener()
 		{
-			
+
 		}
-		
+
 		/**
 		 * Updates the Tween container.
 		 */
 		public function update():void
 		{
-			
+
 		}
-		
+
 		/**
 		 * Adds a new Tween.
 		 * @param	t			The Tween to add.
@@ -63,7 +63,7 @@
 			if (start) _tween.start();
 			return t;
 		}
-		
+
 		/**
 		 * Removes a Tween.
 		 * @param	t		The Tween to remove.
@@ -80,7 +80,7 @@
 			t.active = false;
 			return t;
 		}
-		
+
 		/**
 		 * Removes all Tweens.
 		 */
@@ -95,8 +95,8 @@
 				t = n;
 			}
 		}
-		
-		/** 
+
+		/**
 		 * Updates all contained tweens.
 		 */
 		public function updateTweens():void
@@ -114,8 +114,8 @@
 				t = n;
 			}
 		}
-		
+
 		// List information.
-		/** @private */ internal var _tween:Tween;
+		/** @private */ public var _tween:Tween;
 	}
 }

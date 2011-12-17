@@ -13,42 +13,42 @@
 		 * If the render() loop is performed.
 		 */
 		public var visible:Boolean = true;
-		
+
 		/**
 		 * Point used to determine drawing offset in the render loop.
 		 */
 		public var camera:Point = new Point;
-		
+
 		/**
 		 * Constructor.
 		 */
-		public function World() 
+		public function World()
 		{
-			
+
 		}
-		
+
 		/**
 		 * Override this; called when World is switch to, and set to the currently active world.
 		 */
 		public function begin():void
 		{
-			
+
 		}
-		
+
 		/**
 		 * Override this; called when World is changed, and the active world is no longer this.
 		 */
 		public function end():void
 		{
-			
+
 		}
-		
+
 		/**
 		 * Performed by the game loop, updates all contained Entities.
 		 * If you override this to give your World update code, remember
 		 * to call super.update() or your Entities will not be updated.
 		 */
-		override public function update():void 
+		override public function update():void
 		{
 			// update the entities
 			var e:Entity = _updateFirst;
@@ -63,13 +63,13 @@
 				e = e._updateNext;
 			}
 		}
-		
+
 		/**
 		 * Performed by the game loop, renders all contained Entities.
 		 * If you override this to give your World render code, remember
 		 * to call super.render() or your Entities will not be rendered.
 		 */
-		public function render():void 
+		public function render():void
 		{
 			// render the entities in order of depth
 			var e:Entity,
@@ -84,23 +84,23 @@
 				}
 			}
 		}
-		
+
 		/**
 		 * Override this; called when game gains focus.
 		 */
 		public function focusGained():void
 		{
-			
+
 		}
-		
+
 		/**
 		 * Override this; called when game loses focus.
 		 */
 		public function focusLost():void
 		{
-			
+
 		}
-		
+
 		/**
 		 * X position of the mouse in the World.
 		 */
@@ -108,7 +108,7 @@
 		{
 			return FP.screen.mouseX + camera.x;
 		}
-		
+
 		/**
 		 * Y position of the mouse in the world.
 		 */
@@ -116,7 +116,7 @@
 		{
 			return FP.screen.mouseY + camera.y;
 		}
-		
+
 		/**
 		 * Adds the Entity to the World at the end of the frame.
 		 * @param	e		Entity object you want to add.
@@ -127,7 +127,7 @@
 			_add[_add.length] = e;
 			return e;
 		}
-		
+
 		/**
 		 * Removes the Entity from the World at the end of the frame.
 		 * @param	e		Entity object you want to remove.
@@ -138,7 +138,7 @@
 			_remove[_remove.length] = e;
 			return e;
 		}
-		
+
 		/**
 		 * Removes all Entities from the World at the end of the frame.
 		 */
@@ -151,7 +151,7 @@
 				e = e._updateNext;
 			}
 		}
-		
+
 		/**
 		 * Adds multiple Entities to the world.
 		 * @param	list		Several Entities (as arguments) or an Array/Vector of Entities.
@@ -166,7 +166,7 @@
 			}
 			for each (e in list) add(e);
 		}
-		
+
 		/**
 		 * Removes multiple Entities from the world.
 		 * @param	list		Several Entities (as arguments) or an Array/Vector of Entities.
@@ -181,7 +181,7 @@
 			}
 			for each (e in list) remove(e);
 		}
-		
+
 		/**
 		 * Adds an Entity to the World with the Graphic object.
 		 * @param	graphic		Graphic to assign the Entity.
@@ -197,7 +197,7 @@
 			e.active = false;
 			return add(e);
 		}
-		
+
 		/**
 		 * Adds an Entity to the World with the Mask object.
 		 * @param	mask	Mask to assign the Entity.
@@ -213,7 +213,7 @@
 			e.active = e.visible = false;
 			return add(e);
 		}
-		
+
 		/**
 		 * Returns a new Entity, or a stored recycled Entity if one exists.
 		 * @param	classType		The Class of the Entity you want to add.
@@ -232,7 +232,7 @@
 			if (addToWorld) return add(e);
 			return e;
 		}
-		
+
 		/**
 		 * Removes the Entity from the World at the end of the frame and recycles it.
 		 * The recycled Entity can then be fetched again by calling the create() function.
@@ -244,7 +244,7 @@
 			_recycle[_recycle.length] = e;
 			return remove(e);
 		}
-		
+
 		/**
 		 * Clears stored recycled Entities of the Class type.
 		 * @param	classType		The Class type to clear.
@@ -261,7 +261,7 @@
 			}
 			delete _recycled[classType];
 		}
-		
+
 		/**
 		 * Clears stored recycled Entities of all Class types.
 		 */
@@ -269,7 +269,7 @@
 		{
 			for (var classType:Object in _recycled) clearRecycled(classType as Class);
 		}
-		
+
 		/**
 		 * Brings the Entity to the front of its contained layer.
 		 * @param	e		The Entity to shift.
@@ -289,7 +289,7 @@
 			e._renderPrev = null;
 			return true;
 		}
-		
+
 		/**
 		 * Sends the Entity to the back of its contained layer.
 		 * @param	e		The Entity to shift.
@@ -309,7 +309,7 @@
 			e._renderNext = null;
 			return true;
 		}
-		
+
 		/**
 		 * Shifts the Entity one place towards the front of its contained layer.
 		 * @param	e		The Entity to shift.
@@ -330,7 +330,7 @@
 			else _renderFirst[e._layer] = e;
 			return true;
 		}
-		
+
 		/**
 		 * Shifts the Entity one place towards the back of its contained layer.
 		 * @param	e		The Entity to shift.
@@ -351,7 +351,7 @@
 			else _renderLast[e._layer] = e;
 			return true;
 		}
-		
+
 		/**
 		 * If the Entity as at the front of its layer.
 		 * @param	e		The Entity to check.
@@ -361,7 +361,7 @@
 		{
 			return e._renderPrev == null;
 		}
-		
+
 		/**
 		 * If the Entity as at the back of its layer.
 		 * @param	e		The Entity to check.
@@ -371,7 +371,7 @@
 		{
 			return e._renderNext == null;
 		}
-		
+
 		/**
 		 * Returns the first Entity that collides with the rectangular area.
 		 * @param	type		The Entity type to check for.
@@ -409,7 +409,7 @@
 			}
 			return null;
 		}
-		
+
 		/**
 		 * Returns the first Entity found that collides with the line.
 		 * @param	type		The Entity type to check for.
@@ -417,7 +417,7 @@
 		 * @param	fromY		Start y of the line.
 		 * @param	toX			End x of the line.
 		 * @param	toY			End y of the line.
-		 * @param	precision		
+		 * @param	precision
 		 * @param	p
 		 * @return
 		 */
@@ -438,14 +438,14 @@
 				}
 				else return collidePoint(type, fromX, toY);
 			}
-			
+
 			// Get information about the line we're about to raycast.
 			var xDelta:int = Math.abs(toX - fromX),
 				yDelta:int = Math.abs(toY - fromY),
 				xSign:Number = toX > fromX ? precision : -precision,
 				ySign:Number = toY > fromY ? precision : -precision,
 				x:Number = fromX, y:Number = fromY, e:Entity;
-			
+
 			// Do a raycast from the start to the end point.
 			if (xDelta > yDelta)
 			{
@@ -523,14 +523,14 @@
 					}
 				}
 			}
-			
+
 			// Check the last position.
 			if (precision > 1)
 			{
 				if (!p) return collidePoint(type, toX, toY);
 				if (collidePoint(type, toX, toY)) return collideLine(type, x - xSign, y - ySign, toX, toY, 1, p);
 			}
-			
+
 			// No collision, return the end point.
 			if (p)
 			{
@@ -539,7 +539,7 @@
 			}
 			return null;
 		}
-		
+
 		/**
 		 * Populates an array with all Entities that collide with the rectangle. This
 		 * function does not empty the array, that responsibility is left to the user.
@@ -563,7 +563,7 @@
 				}
 			}
 		}
-		
+
 		/**
 		 * Populates an array with all Entities that collide with the position. This
 		 * function does not empty the array, that responsibility is left to the user.
@@ -586,7 +586,7 @@
 				}
 			}
 		}
-		
+
 		/**
 		 * Finds the Entity nearest to the rectangle.
 		 * @param	type		The Entity type to check for.
@@ -616,7 +616,7 @@
 			}
 			return near;
 		}
-		
+
 		/**
 		 * Finds the Entity nearest to another.
 		 * @param	type		The Entity type to check for.
@@ -647,7 +647,7 @@
 			}
 			return near;
 		}
-		
+
 		/**
 		 * Finds the Entity nearest to the position.
 		 * @param	type		The Entity type to check for.
@@ -687,12 +687,12 @@
 			}
 			return near;
 		}
-		
+
 		/**
 		 * How many Entities are in the World.
 		 */
 		public function get count():uint { return _count; }
-		
+
 		/**
 		 * Returns the amount of Entities of the type are in the World.
 		 * @param	type		The type (or Class type) to count.
@@ -702,7 +702,7 @@
 		{
 			return _typeCount[type] as uint;
 		}
-		
+
 		/**
 		 * Returns the amount of Entities of the Class are in the World.
 		 * @param	c		The Class type to count.
@@ -712,7 +712,7 @@
 		{
 			return _classCount[c] as uint;
 		}
-		
+
 		/**
 		 * Returns the amount of Entities are on the layer in the World.
 		 * @param	layer		The layer to count Entities on.
@@ -722,17 +722,17 @@
 		{
 			return _layerCount[layer] as uint;
 		}
-		
+
 		/**
 		 * The first Entity in the World.
 		 */
 		public function get first():Entity { return _updateFirst; }
-		
+
 		/**
 		 * How many Entity layers the World has.
 		 */
 		public function get layers():uint { return _layerList.length; }
-		
+
 		/**
 		 * The first Entity of the type.
 		 * @param	type		The type to check.
@@ -743,7 +743,7 @@
 			if (!_updateFirst) return null;
 			return _typeFirst[type] as Entity;
 		}
-		
+
 		/**
 		 * The first Entity of the Class.
 		 * @param	c		The Class type to check.
@@ -760,7 +760,7 @@
 			}
 			return null;
 		}
-		
+
 		/**
 		 * The first Entity on the Layer.
 		 * @param	layer		The layer to check.
@@ -771,7 +771,7 @@
 			if (!_updateFirst) return null;
 			return _renderFirst[layer] as Entity;
 		}
-		
+
 		/**
 		 * The last Entity on the Layer.
 		 * @param	layer		The layer to check.
@@ -782,7 +782,7 @@
 			if (!_updateFirst) return null;
 			return _renderLast[layer] as Entity;
 		}
-		
+
 		/**
 		 * The Entity that will be rendered first by the World.
 		 */
@@ -791,7 +791,7 @@
 			if (!_updateFirst) return null;
 			return _renderLast[_layerList[_layerList.length - 1] as int] as Entity;
 		}
-		
+
 		/**
 		 * The Entity that will be rendered last by the world.
 		 */
@@ -800,7 +800,7 @@
 			if (!_updateFirst) return null;
 			return _renderFirst[_layerList[0] as int] as Entity;
 		}
-		
+
 		/**
 		 * The layer that will be rendered first by the World.
 		 */
@@ -809,7 +809,7 @@
 			if (!_updateFirst) return 0;
 			return _layerList[_layerList.length - 1] as int;
 		}
-		
+
 		/**
 		 * The layer that will be rendered last by the World.
 		 */
@@ -818,7 +818,7 @@
 			if (!_updateFirst) return 0;
 			return _layerList[0] as int;
 		}
-		
+
 		/**
 		 * How many different types have been added to the World.
 		 */
@@ -828,7 +828,7 @@
 			for (var type:String in _typeCount) i ++;
 			return i;
 		}
-		
+
 		/**
 		 * Pushes all Entities in the World of the type into the Array or Vector.
 		 * @param	type		The type to check.
@@ -848,7 +848,7 @@
 				}
 			}
 		}
-		
+
 		/**
 		 * Pushes all Entities in the World of the Class into the Array or Vector.
 		 * @param	c			The Class type to check.
@@ -868,7 +868,7 @@
 				}
 			}
 		}
-		
+
 		/**
 		 * Pushes all Entities in the World on the layer into the Array or Vector.
 		 * @param	layer		The layer to check.
@@ -888,7 +888,7 @@
 				}
 			}
 		}
-		
+
 		/**
 		 * Pushes all Entities in the World into the array.
 		 * @param	into		The Array or Vector to populate.
@@ -907,7 +907,7 @@
 				}
 			}
 		}
-		
+
 		/**
 		 * Returns the Entity with the instance name, or null if none exists.
 		 * @param	name	Instance name of the Entity.
@@ -917,14 +917,14 @@
 		{
 			return _entityNames[name];
 		}
-		
+
 		/**
 		 * Updates the add/remove lists at the end of the frame.
 		 */
 		public function updateLists():void
 		{
 			var e:Entity;
-			
+
 			// remove entities
 			if (_remove.length)
 			{
@@ -934,15 +934,15 @@
 					{
 						if(_add.indexOf(e) >= 0)
 							_add.splice(_add.indexOf(e), 1);
-						
+
 						continue;
 					}
 					if (e._world !== this)
 						continue;
-					
+
 					e.removed();
 					e._world = null;
-					
+
 					removeUpdate(e);
 					removeRender(e);
 					if (e._type) removeType(e);
@@ -951,7 +951,7 @@
 				}
 				_remove.length = 0;
 			}
-			
+
 			// add entities
 			if (_add.length)
 			{
@@ -959,18 +959,18 @@
 				{
 					if (e._world)
 						continue;
-					
+
 					addUpdate(e);
 					addRender(e);
 					if (e._type) addType(e);
 					if (e._name) registerName(e);
-					
+
 					e._world = this;
 					e.added();
 				}
 				_add.length = 0;
 			}
-			
+
 			// recycle entities
 			if (_recycle.length)
 			{
@@ -978,13 +978,13 @@
 				{
 					if (e._world || e._recycleNext)
 						continue;
-					
+
 					e._recycleNext = _recycled[e._class];
 					_recycled[e._class] = e;
 				}
 				_recycle.length = 0;
 			}
-			
+
 			// sort the depth list
 			if (_layerSort)
 			{
@@ -992,7 +992,7 @@
 				_layerSort = false;
 			}
 		}
-		
+
 		/** @private Adds Entity to the update list. */
 		private function addUpdate(e:Entity):void
 		{
@@ -1009,7 +1009,7 @@
 			if (!_classCount[e._class]) _classCount[e._class] = 0;
 			_classCount[e._class] ++;
 		}
-		
+
 		/** @private Removes Entity from the update list. */
 		private function removeUpdate(e:Entity):void
 		{
@@ -1018,11 +1018,11 @@
 			if (e._updateNext) e._updateNext._updatePrev = e._updatePrev;
 			if (e._updatePrev) e._updatePrev._updateNext = e._updateNext;
 			e._updateNext = e._updatePrev = null;
-			
+
 			_count --;
 			_classCount[e._class] --;
 		}
-		
+
 		/** @private Adds Entity to the render list. */
 		internal function addRender(e:Entity):void
 		{
@@ -1046,7 +1046,7 @@
 			_renderFirst[e._layer] = e;
 			e._renderPrev = null;
 		}
-		
+
 		/** @private Removes Entity from the render list. */
 		internal function removeRender(e:Entity):void
 		{
@@ -1071,7 +1071,7 @@
 			_layerCount[e._layer] --;
 			e._renderNext = e._renderPrev = null;
 		}
-		
+
 		/** @private Adds Entity to the type list. */
 		internal function addType(e:Entity):void
 		{
@@ -1090,7 +1090,7 @@
 			e._typePrev = null;
 			_typeFirst[e._type] = e;
 		}
-		
+
 		/** @private Removes Entity from the type list. */
 		internal function removeType(e:Entity):void
 		{
@@ -1101,19 +1101,19 @@
 			e._typeNext = e._typePrev = null;
 			_typeCount[e._type] --;
 		}
-		
+
 		/** @private Register's the Entity's instance name. */
 		internal function registerName(e:Entity):void
 		{
 			_entityNames[e._name] = e;
 		}
-		
+
 		/** @private Unregister's the Entity's instance name. */
 		internal function unregisterName(e:Entity):void
 		{
 			if (_entityNames[e._name] == e) delete _entityNames[e._name];
 		}
-		
+
 		/** @private Calculates the squared distance between two rectangles. */
 		private static function squareRects(x1:Number, y1:Number, w1:Number, h1:Number, x2:Number, y2:Number, w2:Number, h2:Number):Number
 		{
@@ -1136,13 +1136,13 @@
 			if (y1 > y2) return squarePoints(x1 + w1, y1, x2, y2 + h2)
 			return squarePoints(x1 + w1, y1 + h1, x2, y2);
 		}
-		
+
 		/** @private Calculates the squared distance between two points. */
 		private static function squarePoints(x1:Number, y1:Number, x2:Number, y2:Number):Number
 		{
 			return (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2);
 		}
-		
+
 		/** @private Calculates the squared distance between a rectangle and a point. */
 		private static function squarePointRect(px:Number, py:Number, rx:Number, ry:Number, rw:Number, rh:Number):Number
 		{
@@ -1165,16 +1165,16 @@
 			if (py > ry) return squarePoints(px, py, rx, ry + rh)
 			return squarePoints(px, py, rx, ry);
 		}
-		
+
 		// Adding and removal.
 		/** @private */	private var _add:Vector.<Entity> = new Vector.<Entity>;
 		/** @private */	private var _remove:Vector.<Entity> = new Vector.<Entity>;
 		/** @private */	private var _recycle:Vector.<Entity> = new Vector.<Entity>;
-		
+
 		// Update information.
-		/** @private */	private var _updateFirst:Entity;
+		/** @private */	protected var _updateFirst:Entity;
 		/** @private */	private var _count:uint;
-		
+
 		// Render information.
 		/** @private */	private var _renderFirst:Array = [];
 		/** @private */	private var _renderLast:Array = [];

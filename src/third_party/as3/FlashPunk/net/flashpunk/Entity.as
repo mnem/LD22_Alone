@@ -1,12 +1,12 @@
 package net.flashpunk
 {
+	import net.flashpunk.graphics.*;
+
 	import flash.display.BitmapData;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.utils.getDefinitionByName;
 	import flash.utils.getQualifiedClassName;
-
-	import net.flashpunk.graphics.*;
 
 	/**
 	 * Main game Entity class updated by World.
@@ -17,47 +17,47 @@ package net.flashpunk
 		 * If the Entity should render.
 		 */
 		public var visible:Boolean = true;
-		
+
 		/**
 		 * If the Entity should respond to collision checks.
 		 */
 		public var collidable:Boolean = true;
-		
+
 		/**
 		 * X position of the Entity in the World.
 		 */
 		public var x:Number = 0;
-		
+
 		/**
 		 * Y position of the Entity in the World.
 		 */
 		public var y:Number = 0;
-		
+
 		/**
 		 * Width of the Entity's hitbox.
 		 */
 		public var width:int;
-		
+
 		/**
 		 * Height of the Entity's hitbox.
 		 */
 		public var height:int;
-		
+
 		/**
 		 * X origin of the Entity's hitbox.
 		 */
 		public var originX:int;
-		
+
 		/**
 		 * Y origin of the Entity's hitbox.
 		 */
 		public var originY:int;
-		
+
 		/**
 		 * The BitmapData target to draw the Entity to. Leave as null to render to the current screen buffer (default).
 		 */
 		public var renderTarget:BitmapData;
-		
+
 		/**
 		 * Constructor. Can be usd to place the Entity and assign a graphic and mask.
 		 * @param	x			X position to place the Entity.
@@ -65,7 +65,7 @@ package net.flashpunk
 		 * @param	graphic		Graphic to assign to the Entity.
 		 * @param	mask		Mask to assign to the Entity.
 		 */
-		public function Entity(x:Number = 0, y:Number = 0, graphic:Graphic = null, mask:Mask = null) 
+		public function Entity(x:Number = 0, y:Number = 0, graphic:Graphic = null, mask:Mask = null)
 		{
 			this.x = x;
 			this.y = y;
@@ -74,36 +74,36 @@ package net.flashpunk
 			HITBOX.assignTo(this);
 			_class = Class(getDefinitionByName(getQualifiedClassName(this)));
 		}
-		
+
 		/**
 		 * Override this, called when the Entity is added to a World.
 		 */
 		public function added():void
 		{
-			
+
 		}
-		
+
 		/**
 		 * Override this, called when the Entity is removed from a World.
 		 */
 		public function removed():void
 		{
-			
+
 		}
-		
+
 		/**
 		 * Updates the Entity.
 		 */
-		override public function update():void 
+		override public function update():void
 		{
-			
+
 		}
-		
+
 		/**
 		 * Renders the Entity. If you override this for special behaviour,
 		 * remember to call super.render() to render the Entity's graphic.
 		 */
-		public function render():void 
+		public function render():void
 		{
 			if (_graphic && _graphic.visible)
 			{
@@ -118,7 +118,7 @@ package net.flashpunk
 				_graphic.render(renderTarget ? renderTarget : FP.buffer, _point, _camera);
 			}
 		}
-		
+
 		/**
 		 * Checks for a collision against an Entity type.
 		 * @param	type		The Entity type to check for.
@@ -129,13 +129,13 @@ package net.flashpunk
 		public function collide(type:String, x:Number, y:Number):Entity
 		{
 			if (!_world) return null;
-			
+
 			var e:Entity = _world._typeFirst[type];
 			if (!e) return null;
-			
+
 			_x = this.x; _y = this.y;
 			this.x = x; this.y = y;
-			
+
 			if (!_mask)
 			{
 				while (e)
@@ -157,7 +157,7 @@ package net.flashpunk
 				this.x = _x; this.y = _y;
 				return null;
 			}
-			
+
 			while (e)
 			{
 				if (e.collidable && e !== this
@@ -177,7 +177,7 @@ package net.flashpunk
 			this.x = _x; this.y = _y;
 			return null;
 		}
-		
+
 		/**
 		 * Checks for collision against multiple Entity types.
 		 * @param	types		An Array or Vector of Entity types to check for.
@@ -188,9 +188,9 @@ package net.flashpunk
 		public function collideTypes(types:Object, x:Number, y:Number):Entity
 		{
 			if (!_world) return null;
-			
+
 			var e:Entity;
-			
+
 			if (types is String) {
 				return collide(String(types), x, y);
 			} else if (types is Array || types is Vector.<String>) {
@@ -199,10 +199,10 @@ package net.flashpunk
 					if ((e = collide(type, x, y))) return e;
 				}
 			}
-			
+
 			return null;
 		}
-		
+
 		/**
 		 * Checks if this Entity collides with a specific Entity.
 		 * @param	e		The Entity to collide against.
@@ -214,7 +214,7 @@ package net.flashpunk
 		{
 			_x = this.x; _y = this.y;
 			this.x = x; this.y = y;
-			
+
 			if (e.collidable
 			&& x - originX + width > e.x - e.originX
 			&& y - originY + height > e.y - e.originY
@@ -240,7 +240,7 @@ package net.flashpunk
 			this.x = _x; this.y = _y;
 			return null;
 		}
-		
+
 		/**
 		 * Checks if this Entity overlaps the specified rectangle.
 		 * @param	x			Virtual x position to place this Entity.
@@ -273,7 +273,7 @@ package net.flashpunk
 			}
 			return false;
 		}
-		
+
 		/**
 		 * Checks if this Entity overlaps the specified position.
 		 * @param	x			Virtual x position to place this Entity.
@@ -304,7 +304,7 @@ package net.flashpunk
 			}
 			return false;
 		}
-		
+
 		/**
 		 * Populates an array with all collided Entities of a type.
 		 * @param	type		The Entity type to check for.
@@ -316,14 +316,14 @@ package net.flashpunk
 		public function collideInto(type:String, x:Number, y:Number, array:Object):void
 		{
 			if (!_world) return;
-			
+
 			var e:Entity = _world._typeFirst[type];
 			if (!e) return;
-			
+
 			_x = this.x; _y = this.y;
 			this.x = x; this.y = y;
 			var n:uint = array.length;
-			
+
 			if (!_mask)
 			{
 				while (e)
@@ -341,7 +341,7 @@ package net.flashpunk
 				this.x = _x; this.y = _y;
 				return;
 			}
-			
+
 			while (e)
 			{
 				if (e.collidable && e !== this
@@ -357,7 +357,7 @@ package net.flashpunk
 			this.x = _x; this.y = _y;
 			return;
 		}
-		
+
 		/**
 		 * Populates an array with all collided Entities of multiple types.
 		 * @param	types		An array of Entity types to check for.
@@ -371,7 +371,7 @@ package net.flashpunk
 			if (!_world) return;
 			for each (var type:String in types) collideInto(type, x, y, array);
 		}
-		
+
 		/**
 		 * If the Entity collides with the camera rectangle.
 		 */
@@ -379,7 +379,7 @@ package net.flashpunk
 		{
 			return collideRect(x, y, _world.camera.x, _world.camera.y, FP.width, FP.height);
 		}
-		
+
 		/**
 		 * The World object this Entity has been added to.
 		 */
@@ -387,47 +387,47 @@ package net.flashpunk
 		{
 			return _world;
 		}
-		
+
 		/**
 		 * Half the Entity's width.
 		 */
 		public function get halfWidth():Number { return width / 2; }
-		
+
 		/**
 		 * Half the Entity's height.
 		 */
 		public function get halfHeight():Number { return height / 2; }
-		
+
 		/**
 		 * The center x position of the Entity's hitbox.
 		 */
 		public function get centerX():Number { return x - originX + width / 2; }
-		
+
 		/**
 		 * The center y position of the Entity's hitbox.
 		 */
 		public function get centerY():Number { return y - originY + height / 2; }
-		
+
 		/**
 		 * The leftmost position of the Entity's hitbox.
 		 */
 		public function get left():Number { return x - originX; }
-		
+
 		/**
 		 * The rightmost position of the Entity's hitbox.
 		 */
 		public function get right():Number { return x - originX + width; }
-		
+
 		/**
 		 * The topmost position of the Entity's hitbox.
 		 */
 		public function get top():Number { return y - originY; }
-		
+
 		/**
 		 * The bottommost position of the Entity's hitbox.
 		 */
 		public function get bottom():Number { return y - originY + height; }
-		
+
 		/**
 		 * The rendering layer of this Entity. Higher layers are rendered first.
 		 */
@@ -444,7 +444,7 @@ package net.flashpunk
 			_layer = value;
 			_world.addRender(this);
 		}
-		
+
 		/**
 		 * The collision type, used for collision checking.
 		 */
@@ -461,7 +461,7 @@ package net.flashpunk
 			_type = value;
 			if (value) _world.addType(this);
 		}
-		
+
 		/**
 		 * An optional Mask component, used for specialized collision. If this is
 		 * not assigned, collision checks will use the Entity's hitbox by default.
@@ -474,7 +474,7 @@ package net.flashpunk
 			_mask = value;
 			if (value) _mask.assignTo(this);
 		}
-		
+
 		/**
 		 * Graphical component to render to the screen.
 		 */
@@ -485,7 +485,7 @@ package net.flashpunk
 			_graphic = value;
 			if (value && value._assign != null) value._assign();
 		}
-		
+
 		/**
 		 * Adds the graphic to the Entity via a Graphiclist.
 		 * @param	g		Graphic to add.
@@ -502,7 +502,7 @@ package net.flashpunk
 			}
 			return g;
 		}
-		
+
 		/**
 		 * Sets the Entity's hitbox properties.
 		 * @param	width		Width of the hitbox.
@@ -517,7 +517,7 @@ package net.flashpunk
 			this.originX = originX;
 			this.originY = originY;
 		}
-		
+
 		/**
 		 * Sets the Entity's hitbox to match that of the provided object.
 		 * @param	o		The object defining the hitbox (eg. an Image or Rectangle).
@@ -535,7 +535,7 @@ package net.flashpunk
 				else if (o.hasOwnProperty("y")) originY = -o.y;
 			}
 		}
-		
+
 		/**
 		 * Sets the origin of the Entity.
 		 * @param	x		X origin.
@@ -546,7 +546,7 @@ package net.flashpunk
 			originX = x;
 			originY = y;
 		}
-		
+
 		/**
 		 * Center's the Entity's origin (half width & height).
 		 */
@@ -555,7 +555,7 @@ package net.flashpunk
 			originX = width / 2;
 			originY = height / 2;
 		}
-		
+
 		/**
 		 * Calculates the distance from another Entity.
 		 * @param	e				The other Entity.
@@ -567,7 +567,7 @@ package net.flashpunk
 			if (!useHitboxes) return Math.sqrt((x - e.x) * (x - e.x) + (y - e.y) * (y - e.y));
 			return FP.distanceRects(x - originX, y - originY, width, height, e.x - e.originX, e.y - e.originY, e.width, e.height);
 		}
-		
+
 		/**
 		 * Calculates the distance from this Entity to the point.
 		 * @param	px				X position.
@@ -580,7 +580,7 @@ package net.flashpunk
 			if (!useHitbox) return Math.sqrt((x - px) * (x - px) + (y - py) * (y - py));
 			return FP.distanceRectPoint(px, py, x - originX, y - originY, width, height);
 		}
-		
+
 		/**
 		 * Calculates the distance from this Entity to the rectangle.
 		 * @param	rx			X position of the rectangle.
@@ -593,7 +593,7 @@ package net.flashpunk
 		{
 			return FP.distanceRects(rx, ry, rwidth, rheight, x - originX, y - originY, width, height);
 		}
-		
+
 		/**
 		 * Gets the class name as a string.
 		 * @return	A string representing the class name.
@@ -603,7 +603,7 @@ package net.flashpunk
 			var s:String = String(_class);
 			return s.substring(7, s.length - 1);
 		}
-		
+
 		/**
 		 * Moves the Entity by the amount, retaining integer values for its x and y.
 		 * @param	x			Horizontal offset.
@@ -665,7 +665,7 @@ package net.flashpunk
 				this.y += y;
 			}
 		}
-		
+
 		/**
 		 * Moves the Entity to the position, retaining integer values for its x and y.
 		 * @param	x			X position.
@@ -677,7 +677,7 @@ package net.flashpunk
 		{
 			moveBy(x - this.x, y - this.y, solidType, sweep);
 		}
-		
+
 		/**
 		 * Moves towards the target position, retaining integer values for its x and y.
 		 * @param	x			X target.
@@ -690,14 +690,14 @@ package net.flashpunk
 		{
 			_point.x = x - this.x;
 			_point.y = y - this.y;
-			
+
 			if (_point.x*_point.x + _point.y*_point.y > amount*amount) {
 				_point.normalize(amount);
 			}
-			
+
 			moveBy(_point.x, _point.y, solidType, sweep);
 		}
-		
+
 		/**
 		 * When you collide with an Entity on the x-axis with moveTo() or moveBy().
 		 * @param	e		The Entity you collided with.
@@ -706,7 +706,7 @@ package net.flashpunk
 		{
 			return true;
 		}
-		
+
 		/**
 		 * When you collide with an Entity on the y-axis with moveTo() or moveBy().
 		 * @param	e		The Entity you collided with.
@@ -715,7 +715,7 @@ package net.flashpunk
 		{
 			return true;
 		}
-		
+
 		/**
 		 * Clamps the Entity's hitbox on the x-axis.
 		 * @param	left		Left bounds.
@@ -727,7 +727,7 @@ package net.flashpunk
 			if (x - originX < left + padding) x = left + originX + padding;
 			if (x - originX + width > right - padding) x = right - width + originX - padding;
 		}
-		
+
 		/**
 		 * Clamps the Entity's hitbox on the y axis.
 		 * @param	top			Min bounds.
@@ -739,7 +739,7 @@ package net.flashpunk
 			if (y - originY < top + padding) y = top + originY + padding;
 			if (y - originY + height > bottom - padding) y = bottom - height + originY - padding;
 		}
-		
+
 		/**
 		 * The Entity's instance name. Use this to uniquely identify single
 		 * game Entities, which can then be looked-up with World.getInstance().
@@ -752,9 +752,9 @@ package net.flashpunk
 			_name = value;
 			if (_name && _world) _world.registerName(this);
 		}
-		
+
 		public function getClass ():Class { return _class; }
-		
+
 		// Entity information.
 		/** @private */ internal var _class:Class;
 		/** @private */ internal var _world:World;
@@ -762,13 +762,13 @@ package net.flashpunk
 		/** @private */ internal var _name:String;
 		/** @private */ internal var _layer:int;
 		/** @private */ internal var _updatePrev:Entity;
-		/** @private */ internal var _updateNext:Entity;
+		/** @private */ public var _updateNext:Entity;
 		/** @private */ internal var _renderPrev:Entity;
 		/** @private */ internal var _renderNext:Entity;
 		/** @private */ internal var _typePrev:Entity;
 		/** @private */ internal var _typeNext:Entity;
 		/** @private */ internal var _recycleNext:Entity;
-		
+
 		// Collision information.
 		/** @private */ private const HITBOX:Mask = new Mask;
 		/** @private */ private var _mask:Mask;
@@ -776,9 +776,9 @@ package net.flashpunk
 		/** @private */ private var _y:Number;
 		/** @private */ private var _moveX:Number = 0;
 		/** @private */ private var _moveY:Number = 0;
-		
+
 		// Rendering information.
-		/** @private */ internal var _graphic:Graphic;
+		/** @private */ public var _graphic:Graphic;
 		/** @private */ private var _point:Point = FP.point;
 		/** @private */ private var _camera:Point = FP.point2;
 	}
