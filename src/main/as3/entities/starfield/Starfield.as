@@ -29,6 +29,9 @@ package entities.starfield
 			}
 
 			super(0, 0, stars);
+
+			layer = Layers.STARS;
+			collidable = false;
 		}
 	}
 }

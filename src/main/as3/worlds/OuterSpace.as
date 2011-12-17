@@ -5,6 +5,7 @@ package worlds
 	import entities.bullets.BulletMaster;
 	import entities.starfield.Starfield;
 
+	import net.flashpunk.Entity;
 	import net.flashpunk.FP;
 	import net.flashpunk.World;
 
@@ -15,6 +16,8 @@ package worlds
 	{
 		public static const SPACE_WIDTH:int = 890 * 5;
 		public static const SPACE_HEIGHT:int = 500 * 5;
+		public static const HALF_SPACE_WIDTH:int = SPACE_WIDTH / 2;
+		public static const HALF_SPACE_HEIGHT:int = SPACE_HEIGHT / 2;
 		//
 		protected var halfBoundsWidth:int;
 		protected var halfBoundsHeight:int;
@@ -61,7 +64,24 @@ package worlds
 
 		override public function update():void
 		{
-			super.update();
+			// update the entities
+			var e:Entity = _updateFirst;
+			while (e)
+			{
+				if (e.active)
+				{
+					if (e._tween) e.updateTweens();
+					e.update();
+
+					// Wrap it
+					if (e.x < -HALF_SPACE_WIDTH) e.x += SPACE_WIDTH;
+					if (e.x > HALF_SPACE_WIDTH) e.x -= SPACE_WIDTH;
+					if (e.y < -HALF_SPACE_HEIGHT) e.y += SPACE_HEIGHT;
+					if (e.y > HALF_SPACE_HEIGHT) e.y -= SPACE_HEIGHT;
+				}
+				if (e._graphic && e._graphic.active) e._graphic.update();
+				e = e._updateNext;
+			}
 
 			// Camera always ensures player is centered
 			camera.x = -halfBoundsWidth + player.x;

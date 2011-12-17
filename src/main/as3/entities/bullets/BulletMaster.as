@@ -1,7 +1,6 @@
 package entities.bullets
 {
 	import net.flashpunk.Entity;
-	import net.flashpunk.graphics.Graphiclist;
 
 	import utility.SimpleObjectPool;
 	import utility.SimpleObjectPoolWatcher;
@@ -17,9 +16,9 @@ package entities.bullets
 
 		public function BulletMaster()
 		{
-			super(0, 0, bullets);
 			name = NAME;
 			pool = new SimpleObjectPool("Bullets", Bullet, this);
+			collidable = false;
 		}
 
 		public function shoot(fromX:Number, fromY:Number, angle:Number, vx:Number, vy:Number):void
@@ -28,16 +27,11 @@ package entities.bullets
 
 			bullet.x = fromX;
 			bullet.y = fromY;
-			bullet.angle = angle;
+			bullet.image.angle = angle;
 			bullet.vx = vx;
 			bullet.vy = vy;
 			bullet.decayRate = 50;
 			bullet.grantNewLife(100);
-		}
-
-		override public function update():void
-		{
-			bullets.update();
 		}
 
 		public function bulletExpired(bullet:Bullet):void
@@ -49,10 +43,9 @@ package entities.bullets
 		{
 			var bullet:Bullet = item as Bullet;
 			bullet.bm = this;
-			bullets.add(bullet);
+			world.add(bullet);
 		}
 
 		protected var pool:SimpleObjectPool;
-		protected var bullets:Graphiclist = new Graphiclist();
 	}
 }

@@ -1,12 +1,14 @@
 package entities.bullets
 {
+	import net.flashpunk.Entity;
 	import net.flashpunk.FP;
 	import net.flashpunk.graphics.Image;
 
 	/**
 	 * @author mnem
 	 */
-	public class Bullet extends Image
+	public class Bullet
+	extends Entity
 	{
 		public var vx:Number;
 		public var vy:Number;
@@ -14,15 +16,16 @@ package entities.bullets
 		public var currentLife:Number;
 		public var decayRate:Number;
 		public var bm:BulletMaster;
+		public var image:Image;
 
 		public function Bullet()
 		{
-			super(PNGAsset.Laser01);
+			image = new Image(PNGAsset.Laser01);
+			image.originX = image.width / 2;
+			image.originY = image.height / 2;
+			super(0, 0, image);
 
-			originX = width / 2;
-			originY = height / 2;
-
-			relative = false;
+			layer = Layers.LASERS;
 		}
 
 		public function grantNewLife(life:Number):void
@@ -50,7 +53,7 @@ package entities.bullets
 			}
 			else
 			{
-				alpha = currentLife / life;
+				image.alpha = currentLife / life;
 			}
 		}
 	}

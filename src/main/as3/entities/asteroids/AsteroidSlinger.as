@@ -2,7 +2,6 @@ package entities.asteroids
 {
 	import net.flashpunk.Entity;
 	import net.flashpunk.FP;
-	import net.flashpunk.graphics.Graphiclist;
 
 	import utility.SimpleObjectPool;
 	import utility.SimpleObjectPoolWatcher;
@@ -20,9 +19,10 @@ package entities.asteroids
 
 		public function AsteroidSlinger()
 		{
-			super(0, 0, asteroids);
+			super();
 			name = NAME;
 			pool = new SimpleObjectPool("Asteroids", Asteroid, this);
+			layer = Layers.ASTEROIDS;
 		}
 
 		override public function update():void
@@ -35,8 +35,6 @@ package entities.asteroids
 					timeToAdd = (FP.random * 60) + 30;
 				}
 			}
-
-			asteroids.update();
 		}
 
 		public function sling():void
@@ -71,11 +69,10 @@ package entities.asteroids
 		{
 			var asteroid:Asteroid = item as Asteroid;
 			asteroid.slinger = this;
-			asteroids.add(asteroid);
+			world.add(asteroid);
 		}
 
 		protected var timeToAdd:int = 0;
-		protected var asteroids:Graphiclist = new Graphiclist();
 		protected var pool:SimpleObjectPool;
 		//
 		private static const ASTEROID_MIN_V:int = 10;

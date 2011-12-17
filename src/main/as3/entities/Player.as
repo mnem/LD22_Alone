@@ -16,22 +16,6 @@ package entities
 	 */
 	public class Player extends Entity
 	{
-		private static const ACTION_SHOOT:String = "Shoot";
-		//
-		private static const MAX_MOUSE_DISTANCE:Number = 300;
-		private static const MAX_VELOCITY:Number = 200;
-		//
-		private static const LASER_POWER_REQUIREMENT:Number = 100;
-		private static const LASER_CHARGE_RATE:Number = 200;
-		private static const LASER_VELOCITY:Number = 300;
-		//
-		protected var playerImage:Image;
-		protected var laserChargeImage:Image;
-		//
-		protected var screenCentreX:int;
-		protected var screenCentreY:int;
-		protected var _scratchPoint:Point = new Point();
-		//
 		public var velocity:Point = new Point();
 		public var laserCharge:Number = 0;
 
@@ -52,6 +36,8 @@ package entities
 			super(x, y, new Graphiclist(playerImage, laserChargeImage));
 
 			Input.define(ACTION_SHOOT, Key.SPACE, Key.X, Key.C);
+
+			layer = Layers.PLAYER;
 		}
 
 		protected function gatherUserInput():void
@@ -116,5 +102,21 @@ package entities
 			velocity.x *= 0.95;
 			velocity.y *= 0.95;
 		}
+
+		private static const ACTION_SHOOT:String = "Shoot";
+		//
+		private static const MAX_MOUSE_DISTANCE:Number = 300;
+		private static const MAX_VELOCITY:Number = 200;
+		//
+		private static const LASER_POWER_REQUIREMENT:Number = 100;
+		private static const LASER_CHARGE_RATE:Number = 200;
+		private static const LASER_VELOCITY:Number = 300;
+		//
+		protected var playerImage:Image;
+		protected var laserChargeImage:Image;
+		//
+		protected var screenCentreX:int;
+		protected var screenCentreY:int;
+		protected var _scratchPoint:Point = new Point();
 	}
 }
