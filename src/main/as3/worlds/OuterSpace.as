@@ -3,9 +3,9 @@ package worlds
 	import entities.Player;
 	import entities.bullets.BulletMaster;
 	import entities.starfield.Starfield;
+
 	import net.flashpunk.FP;
 	import net.flashpunk.World;
-
 
 	/**
 	 * @author mnem
@@ -31,8 +31,12 @@ package worlds
 		{
 			player = new Player();
 
-			starfields = new Vector.<Starfield>(1, true);
-			starfields[0] = new Starfield(FP.bounds.width * 5, FP.bounds.height * 5, 1000);
+			starfields = new Vector.<Starfield>(5, true);
+			starfields[0] = new Starfield(FP.bounds.width * 5, FP.bounds.height * 5, 1000, 1.0, 0.4);
+			starfields[1] = new Starfield(FP.bounds.width * 5, FP.bounds.height * 5, 700, 0.7, 0.55);
+			starfields[2] = new Starfield(FP.bounds.width * 5, FP.bounds.height * 5, 500, 0.5, 0.7);
+			starfields[3] = new Starfield(FP.bounds.width * 5, FP.bounds.height * 5, 300, 0.3, 0.8);
+			starfields[4] = new Starfield(FP.bounds.width * 5, FP.bounds.height * 5, 150, 0.15, 1);
 
 			bulletMaster = new BulletMaster();
 		}
