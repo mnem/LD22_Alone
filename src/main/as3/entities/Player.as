@@ -1,9 +1,13 @@
 package entities
 {
+	import entities.bullets.BulletMaster;
+
 	import net.flashpunk.Entity;
 	import net.flashpunk.FP;
+	import net.flashpunk.graphics.Graphiclist;
 	import net.flashpunk.graphics.Image;
 	import net.flashpunk.utils.Input;
+	import net.flashpunk.utils.Key;
 
 	import flash.geom.Point;
 
@@ -12,13 +16,24 @@ package entities
 	 */
 	public class Player extends Entity
 	{
+		private static const ACTION_SHOOT:String = "Shoot";
+		//
 		private static const MAX_MOUSE_DISTANCE:Number = 300;
-		private static const MAX_VELOCITY:Number = 5;
+		private static const MAX_VELOCITY:Number = 200;
+		//
+		private static const LASER_POWER_REQUIREMENT:Number = 100;
+		private static const LASER_CHARGE_RATE:Number = 200;
+		private static const LASER_VELOCITY:Number = 300;
+		//
 		protected var playerImage:Image;
+		protected var laserChargeImage:Image;
+		//
 		protected var screenCentreX:int;
 		protected var screenCentreY:int;
 		protected var _scratchPoint:Point = new Point();
+		//
 		public var velocity:Point = new Point();
+		public var laserCharge:Number = 0;
 
 		public function Player(x:Number = 0, y:Number = 0)
 		{
@@ -26,14 +41,20 @@ package entities
 			screenCentreY = FP.bounds.height / 2;
 
 			playerImage = new Image(PNGAsset.Player);
-
 			playerImage.originX = playerImage.width / 2;
 			playerImage.originY = playerImage.height / 2;
 
-			super(x, y, playerImage);
+			laserChargeImage = new Image(PNGAsset.LaserCharge);
+			laserChargeImage.originX = laserChargeImage.width / 2;
+			laserChargeImage.originY = laserChargeImage.height / 2;
+			laserChargeImage.visible = false;
+
+			super(x, y, new Graphiclist(playerImage, laserChargeImage));
+
+			Input.define(ACTION_SHOOT, Key.SPACE, Key.X, Key.C);
 		}
 
-		override public function update():void
+		protected function gatherUserInput():void
 		{
 			if (Input.mouseDown)
 			{
@@ -47,11 +68,53 @@ package entities
 				velocity.y = _scratchPoint.y / MAX_MOUSE_DISTANCE * MAX_VELOCITY;
 			}
 
-			x -= velocity.x;
-			y -= velocity.y;
+			if (Input.check(ACTION_SHOOT))
+			{
+				laserChargeImage.visible = true;
 
-			velocity.x *= 0.9;
-			velocity.y *= 0.9;
+				laserCharge += LASER_CHARGE_RATE * FP.elapsed;
+				while (laserCharge >= LASER_POWER_REQUIREMENT)
+				{
+					emitLaser();
+					laserCharge -= LASER_POWER_REQUIREMENT;
+				}
+
+				if (laserCharge >= 0)
+				{
+					laserChargeImage.alpha = laserCharge / LASER_POWER_REQUIREMENT;
+				}
+				else
+				{
+					laserChargeImage.alpha = 0;
+				}
+			}
+
+			if (Input.released(ACTION_SHOOT))
+			{
+				laserCharge = 0;
+				laserChargeImage.visible = false;
+			}
+		}
+
+		protected function emitLaser():void
+		{
+			var bm:BulletMaster = world.getInstance(BulletMaster.NAME) as BulletMaster;
+			if (bm)
+			{
+				FP.angleXY(_scratchPoint, playerImage.angle, LASER_VELOCITY);
+				bm.shoot(x, y, playerImage.angle, _scratchPoint.x, _scratchPoint.y);
+			}
+		}
+
+		override public function update():void
+		{
+			gatherUserInput();
+
+			x -= velocity.x * FP.elapsed;
+			y -= velocity.y * FP.elapsed;
+
+			velocity.x *= 0.95;
+			velocity.y *= 0.95;
 		}
 	}
 }

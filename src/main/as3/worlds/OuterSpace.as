@@ -1,10 +1,11 @@
 package worlds
 {
 	import entities.Player;
+	import entities.bullets.BulletMaster;
 	import entities.starfield.Starfield;
-
 	import net.flashpunk.FP;
 	import net.flashpunk.World;
+
 
 	/**
 	 * @author mnem
@@ -13,8 +14,8 @@ package worlds
 	{
 		protected var halfBoundsWidth:int;
 		protected var halfBoundsHeight:int;
-
 		protected var player:Player;
+		protected var bulletMaster:BulletMaster;
 		protected var starfields:Vector.<Starfield>;
 
 		public function OuterSpace()
@@ -32,16 +33,19 @@ package worlds
 
 			starfields = new Vector.<Starfield>(1, true);
 			starfields[0] = new Starfield(FP.bounds.width * 5, FP.bounds.height * 5, 1000);
+
+			bulletMaster = new BulletMaster();
 		}
 
 		protected function addEntities():void
 		{
-			for(var i:uint = 0;i < starfields.length; i++)
+			for (var i:uint = 0;i < starfields.length; i++)
 			{
 				add(starfields[i]);
 			}
 
 			add(player);
+			add(bulletMaster);
 		}
 
 		override public function update():void
