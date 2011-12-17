@@ -61,6 +61,8 @@ package entities.asteroids
 			asteroid.yV *= FP.random < 0.5 ? -1 : 1;
 			asteroid.rV *= FP.random < 0.5 ? -1 : 1;
 
+			asteroid.power = ((ASTEROID_MAX_POWER - ASTEROID_MIN_POWER) * FP.random) + ASTEROID_MIN_POWER;
+
 			asteroid.active = true;
 			asteroid.visible = true;
 		}
@@ -80,6 +82,9 @@ package entities.asteroids
 		//
 		private static const ASTEROID_MIN_RV:int = 0.2;
 		private static const ASTEROID_MAX_RV:int = 100;
+		//
+		private static const ASTEROID_MIN_POWER:int = 50;
+		private static const ASTEROID_MAX_POWER:int = 100;
 		//
 		private static const MAX_ASTEROIDS:int = 40;
 	}

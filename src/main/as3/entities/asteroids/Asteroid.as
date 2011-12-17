@@ -23,7 +23,10 @@ package entities.asteroids
 			image.originY = image.height / 2;
 			super(0, 0, image);
 
+			setHitbox(image.width, image.height, image.width / 2, image.height / 2);
+
 			layer = Layers.ASTEROIDS;
+			type = CollisionTypes.ASTEROID;
 		}
 
 		override public function update():void

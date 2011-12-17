@@ -32,12 +32,12 @@ package worlds
 			halfBoundsHeight = FP.bounds.height / 2;
 
 			createEntities();
-			addEntities();
 		}
 
 		protected function createEntities():void
 		{
 			player = new Player();
+			add(player);
 
 			starfields = new Vector.<Starfield>(5, true);
 			starfields[0] = new Starfield(SPACE_WIDTH, SPACE_HEIGHT, 1000, 1.0, 0.4);
@@ -45,21 +45,13 @@ package worlds
 			starfields[2] = new Starfield(SPACE_WIDTH, SPACE_HEIGHT, 500, 0.5, 0.7);
 			starfields[3] = new Starfield(SPACE_WIDTH, SPACE_HEIGHT, 300, 0.3, 0.8);
 			starfields[4] = new Starfield(SPACE_WIDTH, SPACE_HEIGHT, 150, 0.15, 1);
+			for (var i:uint = 0;i < starfields.length; i++) add(starfields[i]);
 
 			bulletMaster = new BulletMaster();
-			asteroidSlinger = new AsteroidSlinger();
-		}
-
-		protected function addEntities():void
-		{
-			for (var i:uint = 0;i < starfields.length; i++)
-			{
-				add(starfields[i]);
-			}
-
-			add(asteroidSlinger);
-			add(player);
 			add(bulletMaster);
+
+			asteroidSlinger = new AsteroidSlinger();
+			add(asteroidSlinger);
 		}
 
 		override public function update():void

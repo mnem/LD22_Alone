@@ -16,6 +16,7 @@ package entities
 	 */
 	public class Player extends Entity
 	{
+		public var image:Image;
 		public var velocity:Point = new Point();
 		public var laserCharge:Number = 0;
 
@@ -24,16 +25,18 @@ package entities
 			screenCentreX = FP.bounds.width / 2;
 			screenCentreY = FP.bounds.height / 2;
 
-			playerImage = new Image(PNGAsset.Player);
-			playerImage.originX = playerImage.width / 2;
-			playerImage.originY = playerImage.height / 2;
+			image = new Image(PNGAsset.Player);
+			image.originX = image.width / 2;
+			image.originY = image.height / 2;
+
+			setHitbox(image.width, image.height, image.width / 2, image.height / 2);
 
 			laserChargeImage = new Image(PNGAsset.LaserCharge);
 			laserChargeImage.originX = laserChargeImage.width / 2;
 			laserChargeImage.originY = laserChargeImage.height / 2;
 			laserChargeImage.visible = false;
 
-			super(x, y, new Graphiclist(playerImage, laserChargeImage));
+			super(x, y, new Graphiclist(image, laserChargeImage));
 
 			Input.define(ACTION_SHOOT, Key.SPACE, Key.X, Key.C);
 
@@ -45,7 +48,7 @@ package entities
 			if (Input.mouseDown)
 			{
 				// Find the angle and distance from the centre point
-				playerImage.angle = FP.angle(screenCentreX, screenCentreY, Input.mouseFlashX, Input.mouseFlashY);
+				image.angle = FP.angle(screenCentreX, screenCentreY, Input.mouseFlashX, Input.mouseFlashY);
 
 				_scratchPoint.x = FP.clamp(screenCentreX - Input.mouseFlashX, -MAX_MOUSE_DISTANCE, MAX_MOUSE_DISTANCE);
 				_scratchPoint.y = FP.clamp(screenCentreY - Input.mouseFlashY, -MAX_MOUSE_DISTANCE, MAX_MOUSE_DISTANCE);
@@ -87,8 +90,8 @@ package entities
 			var bm:BulletMaster = world.getInstance(BulletMaster.NAME) as BulletMaster;
 			if (bm)
 			{
-				FP.angleXY(_scratchPoint, playerImage.angle, LASER_VELOCITY);
-				bm.shoot(x, y, playerImage.angle, _scratchPoint.x, _scratchPoint.y);
+				FP.angleXY(_scratchPoint, image.angle, LASER_VELOCITY);
+				bm.shoot(x, y, image.angle, _scratchPoint.x, _scratchPoint.y);
 			}
 		}
 
@@ -101,6 +104,16 @@ package entities
 
 			velocity.x *= 0.95;
 			velocity.y *= 0.95;
+
+			if (collide(CollisionTypes.ASTEROID, x, y))
+			{
+				hitByAnAsteroid();
+			}
+		}
+
+		protected function hitByAnAsteroid():void
+		{
+			world.active = false;
 		}
 
 		private static const ACTION_SHOOT:String = "Shoot";
@@ -112,7 +125,6 @@ package entities
 		private static const LASER_CHARGE_RATE:Number = 200;
 		private static const LASER_VELOCITY:Number = 300;
 		//
-		protected var playerImage:Image;
 		protected var laserChargeImage:Image;
 		//
 		protected var screenCentreX:int;

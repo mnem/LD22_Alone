@@ -25,7 +25,10 @@ package entities.bullets
 			image.originY = image.height / 2;
 			super(0, 0, image);
 
+			setHitbox(image.width, image.height, image.width / 2, image.height / 2);
+
 			layer = Layers.LASERS;
+			type = CollisionTypes.BULLET;
 		}
 
 		public function grantNewLife(life:Number):void
