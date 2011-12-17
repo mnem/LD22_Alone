@@ -5,13 +5,20 @@ package
 
 	import worlds.OuterSpace;
 
-	[SWF(backgroundColor="#000000", frameRate="60", width="890", height="500")]
+	[SWF(backgroundColor="#000000", frameRate="30", width="890", height="500")]
 	public class Main
 	extends Engine
 	{
+		public static const DEBUG:Boolean = true;
+
 		public function Main()
 		{
-			super(890, 500, 60, false);
+			super(890, 500, 30, false);
+
+			if (DEBUG)
+			{
+				FP.console.enable();
+			}
 		}
 
 		override public function init():void

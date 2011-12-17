@@ -11,5 +11,7 @@ package
 		public static const Laser01:Class;
 		[Embed(source="embedded/laser_charge.png")]
 		public static const LaserCharge:Class;
+		[Embed(source="embedded/asteroid_a.png")]
+		public static const AsteroidA:Class;
 	}
 }

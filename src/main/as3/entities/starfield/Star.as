@@ -37,8 +37,6 @@ package entities.starfield
 				target.setPixel32(_point.x, _point.y-1, colour);
 				target.setPixel32(_point.x, _point.y+1, colour);
 			}
-
-			// target.copyPixels(_source, _sourceRect, _point, null, null, true);
 		}
 	}
 }

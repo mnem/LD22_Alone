@@ -1,43 +1,30 @@
 package entities.bullets
 {
 	import net.flashpunk.Entity;
-	import net.flashpunk.FP;
 	import net.flashpunk.graphics.Graphiclist;
+
+	import utility.SimpleObjectPool;
+	import utility.SimpleObjectPoolWatcher;
 
 	/**
 	 * @author mnem
 	 */
-	public class BulletMaster extends Entity
+	public class BulletMaster
+	extends Entity
+	implements SimpleObjectPoolWatcher
 	{
 		public static const NAME:String = "BulletMaster";
-		//
-		protected var bulletPool:Vector.<Bullet> = new Vector.<Bullet>();
-		protected var nextPoolItem:int = -1;
-		//
-		protected var bullets:Graphiclist = new Graphiclist();
 
 		public function BulletMaster()
 		{
 			super(0, 0, bullets);
 			name = NAME;
+			pool = new SimpleObjectPool("Bullets", Bullet, this);
 		}
 
 		public function shoot(fromX:Number, fromY:Number, angle:Number, vx:Number, vy:Number):void
 		{
-			var bullet:Bullet;
-
-			if (nextPoolItem < 0)
-			{
-				// No bullets lying around, lets make one
-				bullet = new Bullet();
-				bullet.bm = this;
-				bullets.add(bullet);
-			}
-			else
-			{
-				bullet = bulletPool[nextPoolItem];
-				nextPoolItem--;
-			}
+			var bullet:Bullet = pool.take();
 
 			bullet.x = fromX;
 			bullet.y = fromY;
@@ -55,14 +42,17 @@ package entities.bullets
 
 		public function bulletExpired(bullet:Bullet):void
 		{
-			nextPoolItem++;
-
-			if ((nextPoolItem + 1) >= bulletPool.length)
-			{
-				FP.log("Bullet pool increasing by " + ((nextPoolItem + 1) - bulletPool.length));
-			}
-
-			bulletPool[nextPoolItem] = bullet;
+			pool.give(bullet);
 		}
+
+		public function itemWasCreated(item:*):void
+		{
+			var bullet:Bullet = item as Bullet;
+			bullet.bm = this;
+			bullets.add(bullet);
+		}
+
+		protected var pool:SimpleObjectPool;
+		protected var bullets:Graphiclist = new Graphiclist();
 	}
 }

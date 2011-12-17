@@ -1,6 +1,7 @@
 package worlds
 {
 	import entities.Player;
+	import entities.asteroids.AsteroidSlinger;
 	import entities.bullets.BulletMaster;
 	import entities.starfield.Starfield;
 
@@ -16,6 +17,7 @@ package worlds
 		protected var halfBoundsHeight:int;
 		protected var player:Player;
 		protected var bulletMaster:BulletMaster;
+		protected var asteroidSlinger:AsteroidSlinger;
 		protected var starfields:Vector.<Starfield>;
 
 		public function OuterSpace()
@@ -39,6 +41,7 @@ package worlds
 			starfields[4] = new Starfield(FP.bounds.width * 5, FP.bounds.height * 5, 150, 0.15, 1);
 
 			bulletMaster = new BulletMaster();
+			asteroidSlinger = new AsteroidSlinger();
 		}
 
 		protected function addEntities():void
@@ -48,6 +51,7 @@ package worlds
 				add(starfields[i]);
 			}
 
+			add(asteroidSlinger);
 			add(player);
 			add(bulletMaster);
 		}
