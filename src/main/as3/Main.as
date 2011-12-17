@@ -1,19 +1,22 @@
 package
 {
 	import net.flashpunk.Engine;
+	import net.flashpunk.FP;
 
-	[SWF(backgroundColor="#000000", frameRate="60", width="800", height="600")]
+	import worlds.OuterSpace;
+
+	[SWF(backgroundColor="#000000", frameRate="60", width="890", height="500")]
 	public class Main
 	extends Engine
 	{
 		public function Main()
 		{
-			super(800, 600, 60, false);
+			super(890, 500, 60, false);
 		}
 
 		override public function init():void
 		{
-			trace("FlashPunk has started successfully!");
+			FP.world = new OuterSpace();
 		}
 	}
 }
