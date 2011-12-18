@@ -77,7 +77,7 @@ package entities.ore
 			xV *= 0.9;
 			yV *= 0.9;
 
-			if (currentLife <= 0)
+			if (currentLife <= 5)
 			{
 				expired();
 			}
@@ -88,6 +88,11 @@ package entities.ore
 				{
 					emitter.emit(ORE, 0, 0);
 				}
+			}
+
+			if(emitter.particleCount == 0)
+			{
+				expired();
 			}
 		}
 

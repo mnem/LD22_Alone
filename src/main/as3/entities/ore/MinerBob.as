@@ -28,7 +28,7 @@ package entities.ore
 			var ore:Ore = pool.take() as Ore;
 
 			ore.spawn(r, g, b);
-			ore.decayRate = 100;
+			ore.decayRate = 10;
 			ore.x = x;
 			ore.y = y;
 			ore.xV = xV;

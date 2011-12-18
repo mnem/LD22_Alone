@@ -17,8 +17,8 @@ package worlds
 	 */
 	public class OuterSpace extends World
 	{
-		public static const SPACE_WIDTH:int = 890 * 5;
-		public static const SPACE_HEIGHT:int = 500 * 5;
+		public static const SPACE_WIDTH:int = 890 * 10;
+		public static const SPACE_HEIGHT:int = 500 * 10;
 		public static const HALF_SPACE_WIDTH:int = SPACE_WIDTH / 2;
 		public static const HALF_SPACE_HEIGHT:int = SPACE_HEIGHT / 2;
 		//

@@ -1,5 +1,7 @@
 package entities.asteroids
 {
+	import entities.Player;
+
 	import net.flashpunk.Entity;
 	import net.flashpunk.FP;
 
@@ -28,7 +30,15 @@ package entities.asteroids
 
 		override public function update():void
 		{
-			if (pool.activeObjects < MAX_ASTEROIDS)
+			if (firstTime)
+			{
+				firstTime = false;
+				for (var i:int = 0; i < MAX_ASTEROIDS; i++)
+				{
+					sling();
+				}
+			}
+			else if (pool.activeObjects < MAX_ASTEROIDS)
 			{
 				if (--timeToAdd <= 0)
 				{
@@ -45,13 +55,14 @@ package entities.asteroids
 			asteroid.x = OuterSpace.SPACE_WIDTH * FP.random;
 			asteroid.y = OuterSpace.SPACE_HEIGHT * FP.random;
 
-			if (asteroid.x > world.camera.x && asteroid.x < (world.camera.x + FP.bounds.width) && asteroid.y > world.camera.y && asteroid.y < (world.camera.y + FP.bounds.height))
+			var p:Player = world.getInstance(Player.NAME) as Player;
+			if(p && FP.distance(asteroid.x, asteroid.y, p.x, p.y) < 500)
 			{
 				if (Main.DEBUG)
 				{
 					FP.log("Whoops, an asteroid would have appeared on screen.");
 				}
-				asteroid.y += FP.bounds.height;
+				asteroid.y = p.y + 500;
 			}
 
 			asteroid.xV = ((ASTEROID_MAX_V - ASTEROID_MIN_V) * FP.random) + ASTEROID_MIN_V;
@@ -81,6 +92,8 @@ package entities.asteroids
 
 		protected var timeToAdd:int = 0;
 		protected var pool:SimpleObjectPool;
+		//
+		protected var firstTime:Boolean = true;
 		//
 		private static const ASTEROID_MIN_V:int = 10;
 		private static const ASTEROID_MAX_V:int = 50;
