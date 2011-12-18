@@ -7,6 +7,7 @@ package entities.asteroids
 
 	import net.flashpunk.Entity;
 	import net.flashpunk.FP;
+	import net.flashpunk.Sfx;
 	import net.flashpunk.graphics.Image;
 
 	/**
@@ -20,10 +21,12 @@ package entities.asteroids
 		public var rV:Number;
 		public var image:Image;
 		public var power:int;
+		public var explosionSound:Sfx;
+		public var hitSound:Sfx;
 
 		public function Asteroid()
 		{
-			image = new Image(PNGAsset.AsteroidA);
+			image = new Image(ImageAsset.AsteroidA);
 			image.originX = image.width / 2;
 			image.originY = image.height / 2;
 			super(0, 0, image);
@@ -32,6 +35,9 @@ package entities.asteroids
 
 			layer = Layers.ASTEROIDS;
 			type = CollisionTypes.ASTEROID;
+
+			explosionSound = new Sfx(AudioAsset.ExplodeA);
+			hitSound = new Sfx(AudioAsset.AsteroidHit);
 		}
 
 		override public function update():void
@@ -43,6 +49,7 @@ package entities.asteroids
 			var bullet:Bullet = collide(CollisionTypes.BULLET, x, y) as Bullet;
 			if (bullet)
 			{
+				hitSound.play();
 				power -= bullet.currentLife;
 				bullet.expired();
 
@@ -77,6 +84,8 @@ package entities.asteroids
 
 		public function explodeAsteroid():void
 		{
+			explosionSound.play();
+
 			active = false;
 			visible = false;
 			collidable = false;

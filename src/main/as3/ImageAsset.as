@@ -3,7 +3,7 @@ package
 	/**
 	 * @author mnem
 	 */
-	public class PNGAsset
+	public class ImageAsset
 	{
 		[Embed(source="embedded/player.png")]
 		public static const Player:Class;

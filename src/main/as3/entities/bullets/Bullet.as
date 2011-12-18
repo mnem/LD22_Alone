@@ -19,7 +19,7 @@ package entities.bullets
 
 		public function Bullet()
 		{
-			image = new Image(PNGAsset.Laser01);
+			image = new Image(ImageAsset.Laser01);
 			image.originX = image.width / 2;
 			image.originY = image.height / 2;
 			super(0, 0, image);

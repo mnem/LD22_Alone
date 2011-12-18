@@ -2,6 +2,7 @@ package entities.ore
 {
 	import net.flashpunk.Entity;
 	import net.flashpunk.FP;
+	import net.flashpunk.Sfx;
 	import net.flashpunk.graphics.Emitter;
 	import net.flashpunk.utils.Ease;
 
@@ -21,10 +22,12 @@ package entities.ore
 		public var r:Number;
 		public var g:Number;
 		public var b:Number;
+		public var pickupSound:Sfx;
+		public var goneSound:Sfx;
 
 		public function Ore()
 		{
-			emitter = new Emitter(PNGAsset.Particle);
+			emitter = new Emitter(ImageAsset.Particle);
 
 			emitter.newType(ORE);
 			emitter.setAlpha(ORE, 1, 0);
@@ -36,6 +39,9 @@ package entities.ore
 
 			layer = Layers.ORE;
 			type = CollisionTypes.ORE;
+
+			pickupSound = new Sfx(AudioAsset.OrePickup);
+			goneSound = new Sfx(AudioAsset.OreGone);
 		}
 
 		public function spawn(r:Number, g:Number, b:Number):void
@@ -85,11 +91,14 @@ package entities.ore
 			}
 		}
 
-		public function expired():void
+		public function expired(collected:Boolean = false):void
 		{
 			visible = false;
 			active = false;
 			collidable = false;
+
+			collected ? pickupSound.play() : goneSound.play(0.1);
+
 			var bob:MinerBob = world.getInstance(MinerBob.NAME) as MinerBob;
 			if (bob)
 			{

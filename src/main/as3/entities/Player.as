@@ -6,6 +6,7 @@ package entities
 
 	import net.flashpunk.Entity;
 	import net.flashpunk.FP;
+	import net.flashpunk.Sfx;
 	import net.flashpunk.graphics.Graphiclist;
 	import net.flashpunk.graphics.Image;
 	import net.flashpunk.graphics.Spritemap;
@@ -32,13 +33,16 @@ package entities
 		public var collectedBlue:Number = 0;
 		//
 		public var won:Boolean = false;
+		//
+		public var chargingSound:Sfx;
+		public var engineSound:Sfx;
 
 		public function Player(x:Number = 0, y:Number = 0)
 		{
 			screenCentreX = FP.bounds.width / 2;
 			screenCentreY = FP.bounds.height / 2;
 
-			image = new Spritemap(PNGAsset.Player, 32, 32);
+			image = new Spritemap(ImageAsset.Player, 32, 32);
 			image.add(ANIM_REST, [0, 1], 4, true);
 			// image = new Image(PNGAsset.Player);
 			image.originX = image.width / 2;
@@ -47,7 +51,7 @@ package entities
 
 			setHitbox(image.width, image.height, image.width / 2, image.height / 2);
 
-			laserChargeImage = new Image(PNGAsset.LaserCharge);
+			laserChargeImage = new Image(ImageAsset.LaserCharge);
 			laserChargeImage.originX = laserChargeImage.width / 2;
 			laserChargeImage.originY = laserChargeImage.height / 2;
 			laserChargeImage.visible = false;
@@ -58,6 +62,9 @@ package entities
 
 			name = NAME;
 			layer = Layers.PLAYER;
+
+			chargingSound = new Sfx(AudioAsset.Charge);
+			engineSound = new Sfx(AudioAsset.Engine);
 		}
 
 		protected function gatherUserInput():void
@@ -69,6 +76,11 @@ package entities
 
 			if (Input.mouseDown)
 			{
+				if (!engineSound.playing)
+				{
+					engineSound.loop(0.1);
+				}
+
 				// Find the angle and distance from the centre point
 				image.angle = FP.angle(screenCentreX, screenCentreY, Input.mouseFlashX, Input.mouseFlashY);
 
@@ -79,9 +91,18 @@ package entities
 				velocity.y = _scratchPoint.y / MAX_MOUSE_DISTANCE * MAX_VELOCITY;
 			}
 
+			if (Input.mouseReleased)
+			{
+				engineSound.stop();
+			}
+
 			if (Input.check(ACTION_SHOOT))
 			{
 				laserChargeImage.visible = true;
+				if (!chargingSound.playing)
+				{
+					chargingSound.loop(0.2);
+				}
 
 				laserCharge += LASER_CHARGE_RATE * FP.elapsed;
 				while (laserCharge >= LASER_POWER_REQUIREMENT)
@@ -102,6 +123,7 @@ package entities
 
 			if (Input.released(ACTION_SHOOT))
 			{
+				chargingSound.stop();
 				laserCharge = 0;
 				laserChargeImage.visible = false;
 			}
@@ -164,7 +186,7 @@ package entities
 			collectedGreen += ore.g;
 			collectedBlue += ore.b;
 
-			ore.expired();
+			ore.expired(true);
 
 			var upperLimit:Number = Config.ORE_TARGET - 2;
 			if (collectedRed >= upperLimit && collectedGreen >= upperLimit && collectedBlue >= upperLimit)

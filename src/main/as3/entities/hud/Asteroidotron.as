@@ -19,7 +19,7 @@ package entities.hud
 
 		public function Asteroidotron()
 		{
-			indicator = new Spritemap(PNGAsset.AsteroidIndicator, 16, 16);
+			indicator = new Spritemap(ImageAsset.AsteroidIndicator, 16, 16);
 			indicator.add(ACTIVE, [0, 1, 2, 3, 4, 5], 15, true);
 			indicator.play(ACTIVE);
 			indicator.alpha = 0.75;

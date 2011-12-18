@@ -23,12 +23,12 @@ package entities.hud
 
 		public function Bar()
 		{
-			label = new Spritemap(PNGAsset.BarLabels, 42, 8);
+			label = new Spritemap(ImageAsset.BarLabels, 42, 8);
 			label.add(R, [0], 0, false);
 			label.add(G, [1], 0, false);
 			label.add(B, [2], 0, false);
 
-			marker = new Image(PNGAsset.Bar);
+			marker = new Image(ImageAsset.Bar);
 			fill = new Image(new BitmapData(marker.width, marker.height, false, 0xffffff));
 
 			marker.scrollX = 0;
