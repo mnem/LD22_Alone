@@ -1,5 +1,7 @@
 package worlds
 {
+	import entities.FadeToColourThenDoSomething;
+	import entities.HelpText;
 	import entities.Player;
 	import entities.asteroids.AsteroidSlinger;
 	import entities.bullets.BulletMaster;
@@ -11,6 +13,7 @@ package worlds
 	import net.flashpunk.Entity;
 	import net.flashpunk.FP;
 	import net.flashpunk.World;
+	import net.flashpunk.graphics.Text;
 
 	/**
 	 * @author mnem
@@ -30,6 +33,8 @@ package worlds
 		protected var bob:MinerBob;
 		protected var starfields:Vector.<Starfield>;
 		protected var indicator:Asteroidotron;
+		protected var fade:FadeToColourThenDoSomething;
+		protected var helpText:Text;
 
 		public function OuterSpace()
 		{
@@ -79,6 +84,16 @@ package worlds
 			indicator.x = halfBoundsWidth;
 			indicator.y = halfBoundsHeight;
 			add(indicator);
+
+			fade = new FadeToColourThenDoSomething(0x000000, removeFade, true);
+			add(fade);
+
+			add(new HelpText());
+		}
+
+		protected function removeFade():void
+		{
+			remove(fade);
 		}
 
 		protected function createEntities():void

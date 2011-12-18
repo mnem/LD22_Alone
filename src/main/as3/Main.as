@@ -3,13 +3,13 @@ package
 	import net.flashpunk.Engine;
 	import net.flashpunk.FP;
 
-	import worlds.OuterSpace;
+	import worlds.Intro;
 
 	[SWF(backgroundColor="#000000", frameRate="30", width="890", height="500")]
 	public class Main
 	extends Engine
 	{
-		public static const DEBUG:Boolean = true;
+		public static const DEBUG:Boolean = false;
 
 		public function Main()
 		{
@@ -23,7 +23,7 @@ package
 
 		override public function init():void
 		{
-			FP.world = new OuterSpace();
+			FP.world = new Intro();
 		}
 	}
 }

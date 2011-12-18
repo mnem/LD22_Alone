@@ -28,5 +28,8 @@ package
 		//
 		[Embed(source="embedded/asteroid_indicator.png")]
 		public static const AsteroidIndicator:Class;
+		//
+		[Embed(source="embedded/win.png")]
+		public static const Win:Class;
 	}
 }

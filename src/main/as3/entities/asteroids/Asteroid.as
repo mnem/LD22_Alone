@@ -99,7 +99,7 @@ package entities.asteroids
 			image.scaleX = 1;
 			image.scaleY = 1;
 			updateHitBox();
-			image.tinting = 0.1;
+			image.tinting = 0.25;
 			image.color = ((0xff * r) << 16) | ((0xff * g) << 8) | (0xff * b);
 
 			active = true;

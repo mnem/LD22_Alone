@@ -31,5 +31,14 @@ package
 		//
 		[Embed(source="embedded/engine.mp3")]
 		public static const Engine:Class;
+		//
+		[Embed(source="embedded/home.mp3")]
+		public static const Home:Class;
+		//
+		[Embed(source="embedded/win.mp3")]
+		public static const Win:Class;
+		//
+		[Embed(source="embedded/death.mp3")]
+		public static const Death:Class;
 	}
 }

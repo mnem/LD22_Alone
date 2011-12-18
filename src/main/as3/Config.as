@@ -5,6 +5,6 @@ package
 	 */
 	public class Config
 	{
-		public static const ORE_TARGET:int = 500;
+		public static const ORE_TARGET:int = 400;
 	}
 }

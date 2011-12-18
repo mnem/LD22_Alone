@@ -56,13 +56,14 @@ package entities.asteroids
 			asteroid.y = OuterSpace.SPACE_HEIGHT * FP.random;
 
 			var p:Player = world.getInstance(Player.NAME) as Player;
-			if(p && FP.distance(asteroid.x, asteroid.y, p.x, p.y) < 500)
+			if(p && (FP.distance(asteroid.x, asteroid.y, p.x, p.y) < 800))
 			{
 				if (Main.DEBUG)
 				{
 					FP.log("Whoops, an asteroid would have appeared on screen.");
 				}
 				asteroid.y = p.y + 500;
+				asteroid.x = p.x + 500;
 			}
 
 			asteroid.xV = ((ASTEROID_MAX_V - ASTEROID_MIN_V) * FP.random) + ASTEROID_MIN_V;

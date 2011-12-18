@@ -13,6 +13,9 @@ package entities
 	import net.flashpunk.utils.Input;
 	import net.flashpunk.utils.Key;
 
+	import worlds.Intro;
+	import worlds.Win;
+
 	import flash.geom.Point;
 
 	/**
@@ -33,9 +36,13 @@ package entities
 		public var collectedBlue:Number = 0;
 		//
 		public var won:Boolean = false;
+		public var dead:Boolean = false;
 		//
 		public var chargingSound:Sfx;
+		public var deathSound:Sfx;
 		public var engineSound:Sfx;
+		public var winSound:Sfx;
+		public var spin:int = 0;
 
 		public function Player(x:Number = 0, y:Number = 0)
 		{
@@ -65,11 +72,13 @@ package entities
 
 			chargingSound = new Sfx(AudioAsset.Charge);
 			engineSound = new Sfx(AudioAsset.Engine);
+			deathSound = new Sfx(AudioAsset.Death);
+			winSound = new Sfx(AudioAsset.Win);
 		}
 
 		protected function gatherUserInput():void
 		{
-			if (won)
+			if (won || dead)
 			{
 				return;
 			}
@@ -127,6 +136,11 @@ package entities
 				laserCharge = 0;
 				laserChargeImage.visible = false;
 			}
+
+			if (Main.DEBUG && Input.check(Key.T))
+			{
+				win();
+			}
 		}
 
 		protected function emitLaser():void
@@ -147,11 +161,18 @@ package entities
 		{
 			gatherUserInput();
 
+			image.angle += spin * FP.elapsed;
+
 			x -= velocity.x * FP.elapsed;
 			y -= velocity.y * FP.elapsed;
 
 			velocity.x *= 0.95;
 			velocity.y *= 0.95;
+
+			if (won || dead)
+			{
+				return;
+			}
 
 			if (collide(CollisionTypes.ASTEROID, x, y))
 			{
@@ -197,19 +218,38 @@ package entities
 
 		public function win():void
 		{
-			collidable = false;
 			won = true;
+			chargingSound.stop();
+			engineSound.stop();
+			winSound.play();
+			world.add(new FadeToColourThenDoSomething(WinText.BACK_COLOUR, winFadeDone));
 		}
 
 		public function hitByAnAsteroid():void
 		{
-			// world.active = false;
-			FP.log("HIT HIT HIT!");
+			chargingSound.stop();
+			engineSound.stop();
+			deathSound.play();
+			dead = true;
+			spin = 600;
+			world.add(new FadeToColourThenDoSomething(0x000000, deathFadeDone));
 		}
 
+		protected function deathFadeDone():void
+		{
+			FP.world = new Intro();
+		}
+
+		protected function winFadeDone():void
+		{
+			FP.world = new Win();
+		}
+
+		protected var fade:FadeToColourThenDoSomething;
+		//
 		private static const ACTION_SHOOT:String = "Shoot";
 		//
-		private static const MAX_MOUSE_DISTANCE:Number = 300;
+		private static const MAX_MOUSE_DISTANCE:Number = 240;
 		private static const MAX_VELOCITY:Number = 200;
 		//
 		private static const LASER_POWER_REQUIREMENT:Number = 100;
