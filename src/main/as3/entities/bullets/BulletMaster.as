@@ -42,7 +42,6 @@ package entities.bullets
 		public function itemWasCreated(item:*):void
 		{
 			var bullet:Bullet = item as Bullet;
-			bullet.bm = this;
 			world.add(bullet);
 		}
 

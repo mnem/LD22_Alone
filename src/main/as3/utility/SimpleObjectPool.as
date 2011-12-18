@@ -48,7 +48,7 @@ package utility
 			}
 
 			activeObjects++;
-			if (Main.DEBUG)
+			if (DEBUG && Main.DEBUG)
 			{
 				FP.log(name + " pool item take. New? " + isNew + " (" + activeObjects + "/" + pool.length + "/ " + nextPoolItem + ")");
 			}
@@ -64,7 +64,7 @@ package utility
 				pool[nextPoolItem] = taken;
 				activeObjects--;
 
-				if (Main.DEBUG)
+				if (DEBUG && Main.DEBUG)
 				{
 					FP.log(name + " pool item returned. (" + activeObjects + "/" + pool.length + "/ " + nextPoolItem + ")");
 				}
@@ -79,5 +79,7 @@ package utility
 		//
 		protected var pool:Array = [];
 		protected var nextPoolItem:int = -1;
+		//
+		private static const DEBUG:Boolean = false;
 	}
 }

@@ -23,6 +23,7 @@ package entities.asteroids
 			name = NAME;
 			pool = new SimpleObjectPool("Asteroids", Asteroid, this);
 			layer = Layers.ASTEROIDS;
+			collidable = false;
 		}
 
 		override public function update():void
@@ -50,7 +51,7 @@ package entities.asteroids
 				{
 					FP.log("Whoops, an asteroid would have appeared on screen.");
 				}
-				asteroid.y -= FP.bounds.height;
+				asteroid.y += FP.bounds.height;
 			}
 
 			asteroid.xV = ((ASTEROID_MAX_V - ASTEROID_MIN_V) * FP.random) + ASTEROID_MIN_V;
@@ -75,7 +76,6 @@ package entities.asteroids
 		public function itemWasCreated(item:*):void
 		{
 			var asteroid:Asteroid = item as Asteroid;
-			asteroid.slinger = this;
 			world.add(asteroid);
 		}
 

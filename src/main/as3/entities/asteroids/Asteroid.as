@@ -1,6 +1,7 @@
 package entities.asteroids
 {
 	import entities.bullets.Bullet;
+	import entities.ore.MinerBob;
 
 	import net.flashpunk.Entity;
 	import net.flashpunk.FP;
@@ -15,7 +16,6 @@ package entities.asteroids
 		public var xV:Number;
 		public var yV:Number;
 		public var rV:Number;
-		public var slinger:AsteroidSlinger;
 		public var image:Image;
 		public var power:int;
 
@@ -55,9 +55,16 @@ package entities.asteroids
 		{
 			active = false;
 			visible = false;
-			if(slinger)
+			var slinger:AsteroidSlinger = world.getInstance(AsteroidSlinger.NAME) as AsteroidSlinger;
+			if (slinger)
 			{
 				slinger.asteroidExpired(this);
+			}
+
+			var bob:MinerBob = world.getInstance(MinerBob.NAME) as MinerBob;
+			if (bob)
+			{
+				bob.spawn(x, y, xV, yV, 128 * FP.random + 128, 128 * FP.random + 128, 128 * FP.random + 128);
 			}
 		}
 	}

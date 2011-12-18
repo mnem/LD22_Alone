@@ -3,6 +3,7 @@ package worlds
 	import entities.Player;
 	import entities.asteroids.AsteroidSlinger;
 	import entities.bullets.BulletMaster;
+	import entities.ore.MinerBob;
 	import entities.starfield.Starfield;
 
 	import net.flashpunk.Entity;
@@ -24,6 +25,7 @@ package worlds
 		protected var player:Player;
 		protected var bulletMaster:BulletMaster;
 		protected var asteroidSlinger:AsteroidSlinger;
+		protected var bob:MinerBob;
 		protected var starfields:Vector.<Starfield>;
 
 		public function OuterSpace()
@@ -52,6 +54,9 @@ package worlds
 
 			asteroidSlinger = new AsteroidSlinger();
 			add(asteroidSlinger);
+
+			bob = new MinerBob();
+			add(bob);
 		}
 
 		override public function update():void

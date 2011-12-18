@@ -15,7 +15,6 @@ package entities.bullets
 		public var life:Number;
 		public var currentLife:Number;
 		public var decayRate:Number;
-		public var bm:BulletMaster;
 		public var image:Image;
 
 		public function Bullet()
@@ -59,6 +58,7 @@ package entities.bullets
 		{
 			visible = false;
 			active = false;
+			var bm:BulletMaster = world.getInstance(BulletMaster.NAME) as BulletMaster;
 			if (bm)
 			{
 				bm.bulletExpired(this);
