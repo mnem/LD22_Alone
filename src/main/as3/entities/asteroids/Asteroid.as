@@ -24,6 +24,9 @@ package entities.asteroids
 		public var power:int;
 		public var explosionSound:Sfx;
 		public var hitSound:Sfx;
+		public var r:Number;
+		public var g:Number;
+		public var b:Number;
 
 		public function Asteroid()
 		{
@@ -41,6 +44,13 @@ package entities.asteroids
 			hitSound = new Sfx(AudioAsset.AsteroidHit);
 		}
 
+		protected function updateHitBox():void
+		{
+			var w:Number = image.width * image.scaleX;
+			var h:Number = image.height * image.scaleY;
+			setHitbox(w, h, w / 2, h / 2);
+		}
+
 		override public function update():void
 		{
 			x += xV * FP.elapsed;
@@ -54,8 +64,9 @@ package entities.asteroids
 				currentPower -= bullet.currentLife;
 				bullet.expired();
 
-				image.scaleX = 0.75 + (0.25 * (currentPower/power));
-				image.scaleY = 0.75 + (0.25 * (currentPower/power));
+				image.scaleX = 0.7 + (0.3 * (currentPower / power));
+				image.scaleY = 0.7 + (0.3 * (currentPower / power));
+				updateHitBox();
 
 				if (currentPower < 0)
 				{
@@ -81,11 +92,19 @@ package entities.asteroids
 
 		public function spawn():void
 		{
+			r = FP.random;
+			g = FP.random;
+			b = FP.random;
+
+			image.scaleX = 1;
+			image.scaleY = 1;
+			updateHitBox();
+			image.tinting = 0.1;
+			image.color = ((0xff * r) << 16) | ((0xff * g) << 8) | (0xff * b);
+
 			active = true;
 			visible = true;
 			collidable = true;
-			image.scaleX = 1;
-			image.scaleY = 1;
 		}
 
 		public function setPower(power:int):void
@@ -110,7 +129,7 @@ package entities.asteroids
 			var bob:MinerBob = world.getInstance(MinerBob.NAME) as MinerBob;
 			if (bob)
 			{
-				bob.spawn(x, y, xV, yV, FP.random, FP.random, FP.random);
+				bob.spawn(x, y, xV, yV, r, g, b);
 			}
 		}
 	}
