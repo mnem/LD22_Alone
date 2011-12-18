@@ -20,6 +20,7 @@ package entities.asteroids
 		public var yV:Number;
 		public var rV:Number;
 		public var image:Image;
+		public var currentPower:int;
 		public var power:int;
 		public var explosionSound:Sfx;
 		public var hitSound:Sfx;
@@ -50,10 +51,13 @@ package entities.asteroids
 			if (bullet)
 			{
 				hitSound.play();
-				power -= bullet.currentLife;
+				currentPower -= bullet.currentLife;
 				bullet.expired();
 
-				if (power < 0)
+				image.scaleX = 0.75 + (0.25 * (currentPower/power));
+				image.scaleY = 0.75 + (0.25 * (currentPower/power));
+
+				if (currentPower < 0)
 				{
 					explodeAsteroid();
 				}
@@ -80,6 +84,14 @@ package entities.asteroids
 			active = true;
 			visible = true;
 			collidable = true;
+			image.scaleX = 1;
+			image.scaleY = 1;
+		}
+
+		public function setPower(power:int):void
+		{
+			this.power = power;
+			this.currentPower = power;
 		}
 
 		public function explodeAsteroid():void

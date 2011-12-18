@@ -62,7 +62,7 @@ package entities.asteroids
 			asteroid.yV *= FP.random < 0.5 ? -1 : 1;
 			asteroid.rV *= FP.random < 0.5 ? -1 : 1;
 
-			asteroid.power = ((ASTEROID_MAX_POWER - ASTEROID_MIN_POWER) * FP.random) + ASTEROID_MIN_POWER;
+			asteroid.setPower(((ASTEROID_MAX_POWER - ASTEROID_MIN_POWER) * FP.random) + ASTEROID_MIN_POWER);
 
 			asteroid.spawn();
 			world.add(asteroid);
