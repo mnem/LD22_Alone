@@ -1,9 +1,6 @@
 package entities.ore
 {
 	import net.flashpunk.Entity;
-	import net.flashpunk.FP;
-	import net.flashpunk.Graphic;
-	import net.flashpunk.Mask;
 
 	import utility.SimpleObjectPool;
 	import utility.SimpleObjectPoolWatcher;
@@ -17,7 +14,7 @@ package entities.ore
 	{
 		public static const NAME:String = "MinerBob";
 
-		public function MinerBob(x:Number = 0, y:Number = 0, graphic:Graphic = null, mask:Mask = null)
+		public function MinerBob()
 		{
 			super();
 			name = NAME;
@@ -26,7 +23,7 @@ package entities.ore
 			collidable = false;
 		}
 
-		public function spawn(x:Number, y:Number, xV:Number, yV:Number, r:int, g:int, b:int):void
+		public function spawn(x:Number, y:Number, xV:Number, yV:Number, r:Number, g:Number, b:Number):void
 		{
 			var ore:Ore = pool.take() as Ore;
 
@@ -36,17 +33,18 @@ package entities.ore
 			ore.y = y;
 			ore.xV = xV;
 			ore.yV = yV;
+			world.add(ore);
 		}
 
 		public function oreEaten(ore:Ore):void
 		{
+			world.remove(ore);
 			pool.give(ore);
 		}
 
 		public function itemWasCreated(item:*):void
 		{
-			var ore:Ore = item as Ore;
-			world.add(ore);
+			// var ore:Ore = item as Ore;
 		}
 
 		protected var pool:SimpleObjectPool;

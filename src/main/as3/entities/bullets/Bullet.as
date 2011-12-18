@@ -36,6 +36,7 @@ package entities.bullets
 			this.currentLife = life;
 			this.visible = true;
 			this.active = true;
+			this.collidable = true;
 		}
 
 		override public function update():void
@@ -58,6 +59,7 @@ package entities.bullets
 		{
 			visible = false;
 			active = false;
+			collidable = false;
 			var bm:BulletMaster = world.getInstance(BulletMaster.NAME) as BulletMaster;
 			if (bm)
 			{

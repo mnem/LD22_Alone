@@ -1,6 +1,8 @@
 package entities.asteroids
 {
+	import entities.Player;
 	import entities.bullets.Bullet;
+	import entities.hud.Asteroidotron;
 	import entities.ore.MinerBob;
 
 	import net.flashpunk.Entity;
@@ -49,12 +51,35 @@ package entities.asteroids
 					explodeAsteroid();
 				}
 			}
+			else
+			{
+				var player:Player = world.getInstance(Player.NAME) as Player;
+				var asteroidotron:Asteroidotron = world.getInstance(Asteroidotron.NAME) as Asteroidotron;
+				if (player && asteroidotron)
+				{
+					var distance:Number = FP.distance(player.x, player.y, x, y);
+					if (distance < asteroidotron.distance)
+					{
+						// We're closer
+						asteroidotron.distance = distance;
+						asteroidotron.indicator.angle = FP.angle(player.x, player.y, x, y);
+					}
+				}
+			}
+		}
+
+		public function spawn():void
+		{
+			active = true;
+			visible = true;
+			collidable = true;
 		}
 
 		public function explodeAsteroid():void
 		{
 			active = false;
 			visible = false;
+			collidable = false;
 			var slinger:AsteroidSlinger = world.getInstance(AsteroidSlinger.NAME) as AsteroidSlinger;
 			if (slinger)
 			{
@@ -64,7 +89,7 @@ package entities.asteroids
 			var bob:MinerBob = world.getInstance(MinerBob.NAME) as MinerBob;
 			if (bob)
 			{
-				bob.spawn(x, y, xV, yV, 128 * FP.random + 128, 128 * FP.random + 128, 128 * FP.random + 128);
+				bob.spawn(x, y, xV, yV, FP.random, FP.random, FP.random);
 			}
 		}
 	}

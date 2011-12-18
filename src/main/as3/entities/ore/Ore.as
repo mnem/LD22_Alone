@@ -5,19 +5,22 @@ package entities.ore
 	import net.flashpunk.graphics.Emitter;
 	import net.flashpunk.utils.Ease;
 
-	import flash.display.BitmapData;
-
 	/**
 	 * @author mnem
 	 */
 	public class Ore extends Entity
 	{
+		public static const MAX:Number = 100;
+		//
 		public var emitter:Emitter;
 		public var currentLife:Number;
 		public var life:Number;
 		public var decayRate:Number;
 		public var xV:Number;
 		public var yV:Number;
+		public var r:Number;
+		public var g:Number;
+		public var b:Number;
 
 		public function Ore()
 		{
@@ -35,19 +38,28 @@ package entities.ore
 			type = CollisionTypes.ORE;
 		}
 
-		public function spawn(r:uint, g:uint, b:uint):void
+		public function spawn(r:Number, g:Number, b:Number):void
 		{
-			r &= 0xff;
-			g &= 0xff;
-			b &= 0xff;
+			r = FP.clamp(r, 0, 1);
+			g = FP.clamp(g, 0, 1);
+			b = FP.clamp(b, 0, 1);
 
-			emitter.setColor(ORE, (r << 16) | (g << 8) | b, 0xffffff);
+			this.r = MAX * r;
+			this.g = MAX * g;
+			this.b = MAX * b;
 
-			life = r + g + b;
+			var rc:uint = r > g && r > b ? 0xff : 0xff * r;
+			var gc:uint = g > r && g > b ? 0xff : 0xff * g;
+			var bc:uint = b > g && b > r ? 0xff : 0xff * b;
+
+			emitter.setColor(ORE, (rc << 16) | (gc << 8) | bc);
+
+			life = this.r + this.g + this.b;
 			currentLife = life;
 
 			visible = true;
 			active = true;
+			collidable = true;
 		}
 
 		override public function update():void
@@ -77,6 +89,7 @@ package entities.ore
 		{
 			visible = false;
 			active = false;
+			collidable = false;
 			var bob:MinerBob = world.getInstance(MinerBob.NAME) as MinerBob;
 			if (bob)
 			{

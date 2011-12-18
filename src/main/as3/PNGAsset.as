@@ -19,5 +19,14 @@ package
 		//
 		[Embed(source="embedded/particle.png")]
 		public static const Particle:Class;
+		//
+		[Embed(source="embedded/bar.png")]
+		public static const Bar:Class;
+		//
+		[Embed(source="embedded/bar_labels.png")]
+		public static const BarLabels:Class;
+		//
+		[Embed(source="embedded/asteroid_indicator.png")]
+		public static const AsteroidIndicator:Class;
 	}
 }

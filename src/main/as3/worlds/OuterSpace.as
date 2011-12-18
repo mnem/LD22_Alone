@@ -3,6 +3,8 @@ package worlds
 	import entities.Player;
 	import entities.asteroids.AsteroidSlinger;
 	import entities.bullets.BulletMaster;
+	import entities.hud.Asteroidotron;
+	import entities.hud.Bar;
 	import entities.ore.MinerBob;
 	import entities.starfield.Starfield;
 
@@ -27,6 +29,7 @@ package worlds
 		protected var asteroidSlinger:AsteroidSlinger;
 		protected var bob:MinerBob;
 		protected var starfields:Vector.<Starfield>;
+		protected var indicator:Asteroidotron;
 
 		public function OuterSpace()
 		{
@@ -34,6 +37,48 @@ package worlds
 			halfBoundsHeight = FP.bounds.height / 2;
 
 			createEntities();
+			createHUD();
+		}
+
+		protected function createHUD():void
+		{
+			var x:int = 8;
+			var y:int = 32;
+			var bar:Bar = new Bar();
+
+			bar.name = Bar.R;
+			bar.setColour(0xff0000);
+			bar.showValue(0, Config.ORE_TARGET);
+			bar.y = y;
+			bar.x = x;
+			y += bar.marker.height + 2;
+			bar.label.play(Bar.R);
+			add(bar);
+
+			bar = new Bar();
+			bar.name = Bar.G;
+			bar.setColour(0x00ff00);
+			bar.showValue(0, Config.ORE_TARGET);
+			bar.y = y;
+			bar.x = x;
+			y += bar.marker.height + 2;
+			bar.label.play(Bar.G);
+			add(bar);
+
+			bar = new Bar();
+			bar.name = Bar.B;
+			bar.setColour(0x0000ff);
+			bar.showValue(0, Config.ORE_TARGET);
+			bar.y = y;
+			bar.x = x;
+			y += bar.marker.height + 2;
+			bar.label.play(Bar.B);
+			add(bar);
+
+			indicator = new Asteroidotron();
+			indicator.x = halfBoundsWidth;
+			indicator.y = halfBoundsHeight;
+			add(indicator);
 		}
 
 		protected function createEntities():void
@@ -61,6 +106,10 @@ package worlds
 
 		override public function update():void
 		{
+			// Reset the asteroidotron
+			indicator.distance = Number.MAX_VALUE;
+			indicator.angle = NaN;
+
 			// update the entities
 			var e:Entity = _updateFirst;
 			while (e)
@@ -79,6 +128,8 @@ package worlds
 				if (e._graphic && e._graphic.active) e._graphic.update();
 				e = e._updateNext;
 			}
+
+			indicator.postUpdate();
 
 			// Camera always ensures player is centered
 			camera.x = -halfBoundsWidth + player.x;

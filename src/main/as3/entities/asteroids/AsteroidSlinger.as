@@ -64,19 +64,19 @@ package entities.asteroids
 
 			asteroid.power = ((ASTEROID_MAX_POWER - ASTEROID_MIN_POWER) * FP.random) + ASTEROID_MIN_POWER;
 
-			asteroid.active = true;
-			asteroid.visible = true;
+			asteroid.spawn();
+			world.add(asteroid);
 		}
 
 		public function asteroidExpired(asteroid:Asteroid):void
 		{
+			world.remove(asteroid);
 			pool.give(asteroid);
 		}
 
 		public function itemWasCreated(item:*):void
 		{
-			var asteroid:Asteroid = item as Asteroid;
-			world.add(asteroid);
+			// var asteroid:Asteroid = item as Asteroid;
 		}
 
 		protected var timeToAdd:int = 0;
@@ -88,9 +88,9 @@ package entities.asteroids
 		private static const ASTEROID_MIN_RV:int = 0.2;
 		private static const ASTEROID_MAX_RV:int = 100;
 		//
-		private static const ASTEROID_MIN_POWER:int = 50;
-		private static const ASTEROID_MAX_POWER:int = 200;
+		private static const ASTEROID_MIN_POWER:int = 100;
+		private static const ASTEROID_MAX_POWER:int = 300;
 		//
-		private static const MAX_ASTEROIDS:int = 40;
+		private static const MAX_ASTEROIDS:int = 100;
 	}
 }

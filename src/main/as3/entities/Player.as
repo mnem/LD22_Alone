@@ -1,11 +1,14 @@
 package entities
 {
 	import entities.bullets.BulletMaster;
+	import entities.hud.Bar;
+	import entities.ore.Ore;
 
 	import net.flashpunk.Entity;
 	import net.flashpunk.FP;
 	import net.flashpunk.graphics.Graphiclist;
 	import net.flashpunk.graphics.Image;
+	import net.flashpunk.graphics.Spritemap;
 	import net.flashpunk.utils.Input;
 	import net.flashpunk.utils.Key;
 
@@ -16,20 +19,31 @@ package entities
 	 */
 	public class Player extends Entity
 	{
+		public static const ANIM_REST:String = "rest";
+		//
 		public static const NAME:String = "player";
 		//
-		public var image:Image;
+		public var image:Spritemap;
 		public var velocity:Point = new Point();
 		public var laserCharge:Number = 0;
+		//
+		public var collectedRed:Number = 0;
+		public var collectedGreen:Number = 0;
+		public var collectedBlue:Number = 0;
+		//
+		public var won:Boolean = false;
 
 		public function Player(x:Number = 0, y:Number = 0)
 		{
 			screenCentreX = FP.bounds.width / 2;
 			screenCentreY = FP.bounds.height / 2;
 
-			image = new Image(PNGAsset.Player);
+			image = new Spritemap(PNGAsset.Player, 32, 32);
+			image.add(ANIM_REST, [0, 1], 4, true);
+			// image = new Image(PNGAsset.Player);
 			image.originX = image.width / 2;
 			image.originY = image.height / 2;
+			image.play(ANIM_REST);
 
 			setHitbox(image.width, image.height, image.width / 2, image.height / 2);
 
@@ -48,6 +62,11 @@ package entities
 
 		protected function gatherUserInput():void
 		{
+			if (won)
+			{
+				return;
+			}
+
 			if (Input.mouseDown)
 			{
 				// Find the angle and distance from the centre point
@@ -116,11 +135,54 @@ package entities
 			{
 				hitByAnAsteroid();
 			}
+
+			var ore:Ore = collide(CollisionTypes.ORE, x, y) as Ore;
+			if (ore)
+			{
+				collectOre(ore);
+			}
+			else if (!won)
+			{
+				collectedRed = FP.clamp(collectedRed - ORE_DEPLETION_RATE * FP.elapsed, 0, Config.ORE_TARGET);
+				collectedGreen = FP.clamp(collectedGreen - ORE_DEPLETION_RATE * FP.elapsed, 0, Config.ORE_TARGET);
+				collectedBlue = FP.clamp(collectedBlue - ORE_DEPLETION_RATE * FP.elapsed, 0, Config.ORE_TARGET);
+			}
+
+			// Update HUD
+			var barR:Bar = world.getInstance(Bar.R) as Bar;
+			var barG:Bar = world.getInstance(Bar.G) as Bar;
+			var barB:Bar = world.getInstance(Bar.B) as Bar;
+
+			if (barR) barR.showValue(collectedRed, Config.ORE_TARGET);
+			if (barG) barG.showValue(collectedGreen, Config.ORE_TARGET);
+			if (barB) barB.showValue(collectedBlue, Config.ORE_TARGET);
 		}
 
-		protected function hitByAnAsteroid():void
+		public function collectOre(ore:Ore):void
 		{
-			world.active = false;
+			collectedRed += ore.r;
+			collectedGreen += ore.g;
+			collectedBlue += ore.b;
+
+			ore.expired();
+
+			var upperLimit:Number = Config.ORE_TARGET - 2;
+			if (collectedRed >= upperLimit && collectedGreen >= upperLimit && collectedBlue >= upperLimit)
+			{
+				win();
+			}
+		}
+
+		public function win():void
+		{
+			collidable = false;
+			won = true;
+		}
+
+		public function hitByAnAsteroid():void
+		{
+			// world.active = false;
+			FP.log("HIT HIT HIT!");
 		}
 
 		private static const ACTION_SHOOT:String = "Shoot";
@@ -131,6 +193,8 @@ package entities
 		private static const LASER_POWER_REQUIREMENT:Number = 100;
 		private static const LASER_CHARGE_RATE:Number = 200;
 		private static const LASER_VELOCITY:Number = 300;
+		//
+		private static const ORE_DEPLETION_RATE:Number = 1;
 		//
 		protected var laserChargeImage:Image;
 		//
